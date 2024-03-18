@@ -5,6 +5,8 @@ import LoginForm from './forms/LoginForm';
 import SignupForm from './forms/SignupForm';
 import EditProfileForm from './forms/EditProfileForm';
 import UserContext from './common/UserContext';
+import PoemExplorer from './poems/PoemExplorer';
+import AnalyzePoem from './poems/AnalyzePoem';
 
 function RoutesList({ login, signup }) {
 	const { currentUser } = useContext(UserContext);
@@ -15,8 +17,8 @@ function RoutesList({ login, signup }) {
 			<Route path="signup" element={<SignupForm signup={signup} />} />
 			{currentUser && (
 				<>
-					{/* <Route path="poems-browse" element={<PoemsBrowse />} /> */}
-					{/* <Route path="analyze-poem/:id" element={<AnalyzePoem />} /> */}
+					<Route path="poems" element={<PoemExplorer />} />
+					<Route path="poems/:id" element={<AnalyzePoem />} />
 					{/* <Route path="themes-browse" element={<ThemeCardsList />} /> */}
 					{/* <Route path="contributions" element={<Contributions />} /> */}
 					<Route path="profile" element={<EditProfileForm />} />
