@@ -55,7 +55,7 @@ class BackendApi {
     return res.comment;
   }
 
-  static async getCommentsByTag ({ themeName, poemId, highlightedLines }) {
+  static async getCommentsByTag (themeName, poemId, highlightedLines) {
     const params = { themeName, poemId, highlightedLines: highlightedLines.join(",") };
     let res = await this.request(`comments/by-tag`, params, "get");
     return res.comments;
@@ -74,8 +74,9 @@ class BackendApi {
   }
 
   static async addPoem (data) {
-      let res = await this.request(`poems`, data, "post");
-      return res.poem;
+    console.log(data, 'data')
+    let res = await this.request(`poems`, data, "post");
+    return res.poem;
   }
 
   // Tag Methods

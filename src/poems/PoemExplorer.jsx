@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { hashPoem } from './poem-utils';
 import { useNavigate } from 'react-router-dom';
+import backendApi from '../common/backendApi';
 
 function PoemExplorer({ onSearch }) {
 	const [poems, setPoems] = useState([]);
@@ -29,10 +30,36 @@ function PoemExplorer({ onSearch }) {
 		}
 	};
 
-	const routeToPoem = (poem) => {
-		var analysisId = hashPoem(poem);
+	const routeToPoem = async (poem) => {
+		let analysisId = hashPoem(poem);
 		poem.id = analysisId;
-		console.log(analysisId);
+
+		try {
+			let response = await backendApi.getPoemById(analysisId);
+
+			if (response.title) {
+					let poemInDb = response;
+					let poemTags = await backendApi.getTagsByPoemId(analysisId);
+					poemInDb.tags = poemTags;
+
+					if (poemTags.length) {
+						for (let tag of poemTags) {
+							let tagComments = await backendApi.getCommentsByTag(tag.themeName, tag.poemId, tag.highlightedLines);
+							tag.comments = tagComments;
+						}
+					}
+			}
+	} catch (error) {
+			if (error.some(element => {
+				return element.includes('No such poem with id');
+			})) {
+				// Change linecount property from external API to camelCase
+				poem.lineCount = poem.lineCount || poem.lines.length;
+				delete poem.linecount;
+				const newPoemInDb = await backendApi.addPoem(poem);
+			}
+	}
+
 		navigate(`/poems/${analysisId}`, { state: { data: poem } });
 	};
 
