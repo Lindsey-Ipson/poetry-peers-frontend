@@ -48,6 +48,8 @@ function PoemExplorer({ onSearch }) {
 							tag.comments = tagComments;
 						}
 					}
+					// Set poem to send in state to retrieved poem from database
+					poem = poemInDb;
 			}
 	} catch (error) {
 			if (error.some(element => {
@@ -57,6 +59,9 @@ function PoemExplorer({ onSearch }) {
 				poem.lineCount = poem.lineCount || poem.lines.length;
 				delete poem.linecount;
 				const newPoemInDb = await backendApi.addPoem(poem);
+				newPoemInDb.tags = [];
+				// Set poem to send in state to newly added poem
+				poem = newPoemInDb;
 			}
 	}
 
