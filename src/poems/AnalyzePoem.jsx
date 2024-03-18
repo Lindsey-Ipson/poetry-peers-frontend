@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { getOrAddPoemToDb } from './poem-utils';
+import { getOrAddPoemToDb } from './poemUtils';
 
 function AnalyzePoem () {
   const location = useLocation();
