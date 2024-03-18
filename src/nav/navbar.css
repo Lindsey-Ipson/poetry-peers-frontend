@@ -1,4 +1,4 @@
-.NavBar {
+/* .NavBar {
   background-color: #17553b;
   padding: 10px;
 }
@@ -26,4 +26,103 @@ li {
 .NavLink:hover {
   background-color: #14781d;
   border-radius: 5px;
+} */
+
+/* navbar.css */
+.navbar {
+  background-color: #f8f9fa;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar-brand {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-menu.expanded {
+  display: block;
+  position: absolute;
+  background-color: #f8f9fa;
+  width: 100%;
+  top: 56px;
+  left: 0;
+  border-top: 1px solid #ddd;
+}
+
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.nav-item {
+  padding: 0.5rem 1rem;
+}
+
+.nav-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.nav-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: #007bff;
+  position: relative;
+}
+
+.hamburger::before, .hamburger::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 2px;
+  background-color: #007bff;
+  left: 0;
+}
+
+.hamburger::before {
+  top: -8px;
+}
+
+.hamburger::after {
+  top: 8px;
+}
+
+@media (min-width: 768px) {
+  .nav-menu {
+    display: flex;
+    gap: 20px;
+  }
+  .nav-menu.expanded {
+    display: flex;
+  }
+  .navbar-nav {
+    flex-direction: row;
+  }
+  .nav-toggle {
+    display: none;
+  }
 }

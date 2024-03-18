@@ -1,77 +1,87 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import UserContext from "../common/UserContext";
 import "./navbar.css";
+import { Collapse } from 'bootstrap';
 
 function NavBar({ logout }) {
   const { currentUser } = useContext(UserContext);
 
-  const loggedInNavBar = (
-    <nav className="navbar navbar-expand-md navbar-light bg-light">
+	const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+  const [navbarCollapse, setNavbarCollapse] = useState(null);
+
+  useEffect(() => {
+    const elem = document.getElementById('navbarToggle');
+    const bsCollapse = new Collapse(elem, { toggle: false });
+    setNavbarCollapse(bsCollapse);
+  }, []);
+
+  const handleNavbarToggler = () => {
+    navbarCollapse.toggle();
+  };
+
+  const loggedInNavBarItems = (
+    <>
+      <li className="nav-item">
+        <NavLink to="/companies" className="nav-link">
+          Companies
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/jobs" className="nav-link">
+          Jobs
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/profile" className="nav-link">
+          Profile
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/" onClick={logout} className="nav-link">
+          Logout {currentUser && currentUser.username}
+        </NavLink>
+      </li>
+    </>
+  );
+
+  const loggedOutNavBarItems = (
+    <>
+      <li className="nav-item">
+        <NavLink to="/login" className="nav-link">
+          Login
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink to="/signup" className="nav-link">
+          Signup
+        </NavLink>
+      </li>
+    </>      
+  );
+
+  const navBar = (
+    <nav className="navbar navbar-expand-md navbar-light bg-light fixed-top">
       <div className="container-fluid">
         <NavLink to="/" className="navbar-brand">
-          Poetry Peers
+          Jobly
         </NavLink>
 
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink to="/poems" className="nav-link">
-                Poems
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/themes" className="nav-link">
-                Themes
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/contributions" className="nav-link">
-                Contributions
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/profile" className="nav-link">
-                Profile
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/" onClick={logout} className="nav-link">
-                Logout {currentUser && currentUser.username}
-              </NavLink>
-            </li>
-          </ul>
+				<button onClick={handleNavbarToggler} className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+					<span className="navbar-toggler-icon"></span>
+				</button>
+				<div className="collapse navbar-collapse" id="navbarToggle">
+      		{/* <form class="d-flex" role="search"> */}
+						<ul className="navbar-nav ml-auto">
+              {currentUser ? loggedInNavBarItems : loggedOutNavBarItems}
+						</ul>
+					{/* </form> */}
         </div>
       </div>
     </nav>
   );
 
-  const loggedOutNavBar = (
-    <nav className="navbar navbar-expand-md navbar-light bg-light">
-      <div className="container-fluid">
-        <NavLink to="/" className="navbar-brand">
-          Poetry Peers
-        </NavLink>
-
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink to="/login" className="nav-link">
-                Login
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/signup" className="nav-link">
-                Signup
-              </NavLink>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  );
-
-  return currentUser ? loggedInNavBar : loggedOutNavBar;
+  return navBar;
 }
 
 export default NavBar;
