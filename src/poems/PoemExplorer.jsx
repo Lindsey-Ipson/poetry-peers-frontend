@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { hashPoem } from "./poemUtils";
 import { useNavigate } from "react-router-dom";
 
-function PoemExplorer() {
+function PoemExplorer () {
   const [poems, setPoems] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);

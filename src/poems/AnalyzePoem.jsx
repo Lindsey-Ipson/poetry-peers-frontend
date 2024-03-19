@@ -23,38 +23,23 @@ function AnalyzePoem() {
   }, [initialState]);
 
   // Function to handle text selection
-  const handleTextSelection = (e) => {
-    console.log(e, 'e')
-    console.log(e.target, 'e.target')
-    console.log(e.target.data, 'e.target.data-key')
-    const selectedElement = e.target;
-    const key = selectedElement.getAttribute('data-key');
-    console.log("Key of selected <p> tag:", key);
-
+  const handleTextSelection = (event) => {
+    let selectedIndices;
 
     const selection = window.getSelection();
-    console.log(selection, 'selection')
+    
     if (selection && selection.toString()) {
       const range = selection.getRangeAt(0);
-      console.log(range, 'range')
       const selectedElements = range.cloneContents().querySelectorAll('p');
-      console.log(selectedElements, 'selectedElements')
-      const selectedIndices = Array.from(selectedElements).map(element => parseInt(element.getAttribute('data-key')));
-      console.log("Indices of selected lines:", selectedIndices);
+      selectedIndices = Array.from(selectedElements).map(element => parseInt(element.getAttribute('data-key')));
+
       if (!selectedIndices.length) {
-        const selection = window.getSelection();
-        if (selection && selection.toString()) {
-          const selectedText = selection.toString();
-          const selectedIndices = [];
-          poem.lines.forEach((line, index) => {
-            if (line.includes(selectedText)) {
-              selectedIndices.push(index);
-            }
-          });
-          console.log("Indices of selected lines:", selectedIndices);
-        }
+        const selectedElement = event.target;
+        const key = selectedElement.getAttribute('data-key');
+        selectedIndices = [parseInt(key)];
       }
     }
+    console.log('selectedIndices', selectedIndices);
   };
 
   if (!poem) {
