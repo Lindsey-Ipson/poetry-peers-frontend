@@ -3,40 +3,65 @@ import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { getOrAddPoemToDb } from './poemUtils';
 
-function AnalyzePoem () {
+function AnalyzePoem() {
   const location = useLocation();
   const initialState = location.state?.data;
-  
+
   const [poem, setPoem] = useState(initialState);
 
-  // useEffect to fetch the poem data asynchronously
   useEffect(() => {
-    console.log('in useEffect 1')
     const fetchPoem = async () => {
       try {
         const updatedPoem = await getOrAddPoemToDb(initialState);
-        console.log(updatedPoem, 'poem in analyze poem after getOrAddPoemToDb');
-        setPoem(updatedPoem); // Update the poem state
+        setPoem(updatedPoem);
       } catch (error) {
         console.error("Failed to fetch or add poem", error);
       }
     };
 
     fetchPoem();
-  }, [initialState]); // Depend on initialState so this runs once upon component mount
+  }, [initialState]);
 
-  // Conditional rendering to handle the state before and after async operation
+  // Function to handle text selection
+  const handleTextSelection = () => {
+    const selection = window.getSelection();
+    console.log(selection, 'selection')
+    if (selection && selection.toString()) {
+      const range = selection.getRangeAt(0);
+      console.log(range, 'range')
+      const selectedElements = range.cloneContents().querySelectorAll('p');
+      console.log(selectedElements, 'selectedElements')
+      const selectedIndices = Array.from(selectedElements).map(element => parseInt(element.getAttribute('data-key')));
+      console.log("Indices of selected lines:", selectedIndices);
+      if (!selectedIndices.length) {
+        const selection = window.getSelection();
+        if (selection && selection.toString()) {
+          const selectedText = selection.toString();
+          const selectedIndices = [];
+          poem.lines.forEach((line, index) => {
+            if (line.includes(selectedText)) {
+              selectedIndices.push(index);
+            }
+          });
+          console.log("Indices of selected lines:", selectedIndices);
+        }
+      }
+    }
+  };
+
   if (!poem) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="container-fluid text-center">
-      <h1>{poem.title}</h1>
+    <div className="AnalyzePoem container-fluid text-center">
+      <h1>{poem.title}</h1> 
       <h2>{poem.author}</h2>
-      {poem.lines.map((line, index) => 
-        <p key={uuidv4()}>{line}</p>
-      )}
+      <div className="AnalyzePoems-poemLines" onMouseUp={handleTextSelection}>
+        {poem.lines.map((line, index) => 
+          <p key={index} data-key={index}>{line}</p>
+        )}
+      </div>
     </div>
   );
 }
