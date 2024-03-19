@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getOrAddPoemToDb } from './poemUtils';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../common/UserContext';
+import backendApi from '../common/backendApi';
 
 
 function AnalyzePoem() {
@@ -12,30 +13,29 @@ function AnalyzePoem() {
 	const initialState = location.state?.data;
 
   const { currentUser, setCurrentUser } = useContext(UserContext);
-
-  console.log('currentUser', currentUser);
-
 	const [poem, setPoem] = useState(initialState);
+	const [tags, setTags] = useState([]);
 
 	let selectedIndices;
 
 	useEffect(() => {
-		const fetchPoem = async () => {
+		const fetchPoemAndTags = async () => {
 			try {
 				const updatedPoem = await getOrAddPoemToDb(initialState);
+				const poemTags = await backendApi.getTagsByPoemId(updatedPoem.id);
 				setPoem(updatedPoem);
+				setTags(poemTags);
+				console.log('poemTags', poemTags);
 			} catch (error) {
 				console.error('Failed to fetch or add poem', error);
 			}
 		};
 
-		fetchPoem();
+		fetchPoemAndTags();
 	}, [initialState]);
 
 	// Function to handle text selection
 	const handleTextSelection = (event) => {
-		// let selectedIndices;
-
 		const selection = window.getSelection();
 
 		if (selection && selection.toString()) {
@@ -56,7 +56,6 @@ function AnalyzePoem() {
 		navigate('/poems/CreateTagForm', {
 			state: { data: { selectedIndices, poem, currentUser } },
 		});
-		// navigate(`/poems/${hashedId}`, { state: { data: poem } });
 	};
 
 	if (!poem) {
@@ -65,10 +64,6 @@ function AnalyzePoem() {
 
 	return (
 		<div className="AnalyzePoem container-fluid text-center">
-			{/* <form>
-        <h1>Here is the form</h1>
-        <h2>{selectedIndices}</h2>
-      </form> */}
 			<h1>{poem.title}</h1>
 			<h2>{poem.author}</h2>
 			<div className="AnalyzePoems-poemLines" onMouseUp={handleTextSelection}>
@@ -79,6 +74,7 @@ function AnalyzePoem() {
 				))}
 			</div>
 		</div>
+
 	);
 }
 

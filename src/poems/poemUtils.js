@@ -25,7 +25,7 @@ export async function getOrAddPoemToDb (poem) {
 				if (poemTags.length) {
 					for (let tag of poemTags) {
 						let tagComments = await backendApi.getCommentsByTag(tag.themeName, tag.poemId, tag.highlightedLines);
-						console.log(tagComments, 'tagComments')
+						// console.log(tagComments, 'tagComments')
 						tag.comments = tagComments;
 					}
 				}
