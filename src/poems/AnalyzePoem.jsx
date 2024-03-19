@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { getOrAddPoemToDb } from './poemUtils';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../common/UserContext';
+
 
 function AnalyzePoem() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const initialState = location.state?.data;
+
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
+  console.log('currentUser', currentUser);
 
 	const [poem, setPoem] = useState(initialState);
 
@@ -48,7 +54,7 @@ function AnalyzePoem() {
 		console.log('selectedIndices', selectedIndices);
 
 		navigate('/poems/CreateTagForm', {
-			state: { data: { selectedIndices, poem } },
+			state: { data: { selectedIndices, poem, currentUser } },
 		});
 		// navigate(`/poems/${hashedId}`, { state: { data: poem } });
 	};

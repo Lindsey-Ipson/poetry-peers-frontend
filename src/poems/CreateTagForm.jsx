@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import backendApi from '../common/backendApi';
 
-function CreateTagForm() {
+function CreateTagForm () {
+	const navigate = useNavigate();
   const location = useLocation();
   const initialState = location.state?.data;
   const [themes, setThemes] = useState(null); 
   const [selectedTheme, setSelectedTheme] = useState(null);
   const [customTheme, setCustomTheme] = useState('');
+	const [analysis, setAnalysis] = useState('');
 
-  let selectedIndices = initialState.selectedIndices;
-  let poem = initialState.poem;
+	const { selectedIndices, poem, currentUser } = initialState || {};
 
   useEffect(() => {
     console.log('Component mounted');
@@ -18,8 +19,9 @@ function CreateTagForm() {
     const fetchThemes = async () => {
       try {
         const themesData = await backendApi.getThemes();
-        console.log(themesData)
-        setThemes(themesData);
+
+        setThemes(themesData.map((theme) => {
+					return theme.name}));
       } catch (error) {
         console.error('Failed to fetch themes:', error);
       }
@@ -28,12 +30,37 @@ function CreateTagForm() {
     fetchThemes();
   }, [initialState]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const finalTheme = selectedTheme || customTheme; // Use selected theme or custom theme
-    // Handle form submission with finalTheme
-  };
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		let finalTheme = selectedTheme || customTheme; // Use selected theme or custom theme
+	
+		if (themes && !themes.includes(finalTheme)) {
+			try {
+				// Add new theme to database and update finalTheme to be returned new theme name -- necessary since lowercased first letters of each word will be uppercased before being added to database
+				const themeResponse = await backendApi.addTheme({name: finalTheme});
+				finalTheme = themeResponse.name;
+			} catch (error) {
+				console.error('Failed to add theme:', error);
+			}
+		}
 
+		try {
+			await backendApi.addTag({
+				themeName: finalTheme,
+				poemId: poem.id,
+				highlightedLines: selectedIndices,
+				analysis: analysis,
+				username: currentUser.username,
+			});
+		} catch (error) {
+			console.error('Failed to add tag:', error);
+		}
+
+		// Redirect to poem page
+		navigate(`/poems/${poem.id}`, { state: { data: poem } });
+
+	};
+	
   const handleThemeChange = (event) => {
     setSelectedTheme(event.target.value);
   };
@@ -41,6 +68,10 @@ function CreateTagForm() {
   const handleCustomThemeChange = (event) => {
     setCustomTheme(event.target.value); 
   };
+
+	const handleAnalysisChange = (event) => {
+		setAnalysis(event.target.value);
+	}
 
   return (
     <div className="CreateTagForm">
@@ -62,11 +93,11 @@ function CreateTagForm() {
               type="radio"
               id={`theme-${index}`}
               name="theme"
-              value={theme.name}
-              checked={selectedTheme === theme.name}
+              value={theme}
+              checked={selectedTheme === theme}
               onChange={handleThemeChange}
             />
-            <label htmlFor={`theme-${index}`}>{theme.name}</label>
+            <label htmlFor={`theme-${index}`}>{theme}</label>
           </div>
         ))}
         <div>
@@ -87,6 +118,17 @@ function CreateTagForm() {
             disabled={!!selectedTheme} // Disable custom input if a theme is selected
           />
         </div>
+
+				<h3>Provide your analysis:</h3>
+				<p>Please explain how this theme pertains to these lines, and how it contributes to the overall meaning of the poem.</p>
+				<label htmlFor="analysis"></label>
+				<input 
+					type="text"
+					id="analysis"
+					value={analysis}
+					onChange={handleAnalysisChange}
+				/>
+
         <button type="submit">Submit</button>
       </form>
     </div>
@@ -94,137 +136,4 @@ function CreateTagForm() {
 }
 
 export default CreateTagForm;
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { useLocation } from 'react-router-dom';
-// import backendApi from '../common/backendApi';
-
-// function CreateTagForm() {
-//   const location = useLocation();
-//   const initialState = location.state?.data;
-//   const [themes, setThemes] = useState(null); 
-//   const [selectedTheme, setSelectedTheme] = useState(null); // State to hold selected theme
-
-//   let selectedIndices = initialState.selectedIndices;
-//   let poem = initialState.poem;
-
-//   useEffect(() => {
-//     console.log('Component mounted');
-
-//     const fetchThemes = async () => {
-//       try {
-//         const themesData = await backendApi.getThemes();
-//         console.log(themesData)
-//         setThemes(themesData); // Set themes in state
-//       } catch (error) {
-//         console.error('Failed to fetch themes:', error);
-//       }
-//     };
-
-//     fetchThemes(); // Call the fetchThemes function
-//   }, [initialState]);
-
-//   const handleSubmit = (event) => {
-//     event.preventDefault();
-//     // Handle form submission
-//   };
-
-//   const handleThemeChange = (event) => {
-//     setSelectedTheme(event.target.value); // Update selected theme
-//   };
-
-//   return (
-//     <div className="CreateTagForm">
-//       <h1>Create a new tag</h1>
-//       <h2>For poem "{poem.title}" by {poem.author}</h2>
-
-//       <h3>Lines you've selected:</h3>
-//       <div>
-//         {selectedIndices.map((index) => (
-//           <p key={index}>{poem.lines[index]}</p>
-//         ))}
-//       </div>
-
-//       <form onSubmit={handleSubmit}>
-//         <h3>Select a theme:</h3>
-//         {themes && themes.map((theme, index) => (
-//           <div key={index}>
-//             <input
-//               type="radio"
-//               id={`theme-${index}`}
-//               name="theme"
-//               value={theme.name}
-//               checked={selectedTheme === theme.name}
-//               onChange={handleThemeChange}
-//             />
-//             <label htmlFor={`theme-${index}`}>{theme.name}</label>
-//           </div>
-//         ))}
-//         <button type="submit">Submit</button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default CreateTagForm;
-
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
-// import { useLocation } from 'react-router-dom';
-// import backendApi from '../common/backendApi';
-
-// function CreateTagForm() {
-// 	const location = useLocation();
-// 	const initialState = location.state?.data;
-// 	const [themes, setThemes] = useState(null); 
-
-// 	let selectedIndices = initialState.selectedIndices;
-// 	let poem = initialState.poem;
-
-// 	useEffect(() => {
-//     console.log('Component mounted');
-
-//     const fetchThemes = async () => {
-//       try {
-//         const themesData = await backendApi.getThemes();
-// 				console.log(themesData)
-//         setThemes(themesData); // Set themes in state
-//       } catch (error) {
-//         console.error('Failed to fetch themes:', error);
-//       }
-//     };
-
-//     fetchThemes(); // Call the fetchThemes function
-//   }, [initialState]);
-
-// 	const handleSubmit = (event) => {
-// 		event.preventDefault();
-// 	};
-
-// 	return (
-// 		<div className="CreateTagForm">
-// 			<h1>Create a new tag</h1>
-// 			<h2>For poem "{poem.title}" by {poem.author}</h2>
-
-// 			<h3>Lines you've selected:</h3>
-// 			<div>
-// 				{selectedIndices.map((index) => (
-// 					<p key={index}>{poem.lines[index]}</p>
-// 				))}
-// 			</div>
-
-
-// 		</div>
-
-
-// 	);
-// }
-
-// export default CreateTagForm;
 
