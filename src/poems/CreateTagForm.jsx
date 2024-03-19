@@ -13,6 +13,8 @@ function CreateTagForm () {
 
 	const { selectedIndices, poem, currentUser } = initialState || {};
 
+	console.log(selectedIndices, 'selectedIndices');
+
   useEffect(() => {
     console.log('Component mounted');
 
