@@ -23,7 +23,15 @@ function AnalyzePoem() {
   }, [initialState]);
 
   // Function to handle text selection
-  const handleTextSelection = () => {
+  const handleTextSelection = (e) => {
+    console.log(e, 'e')
+    console.log(e.target, 'e.target')
+    console.log(e.target.data, 'e.target.data-key')
+    const selectedElement = e.target;
+    const key = selectedElement.getAttribute('data-key');
+    console.log("Key of selected <p> tag:", key);
+
+
     const selection = window.getSelection();
     console.log(selection, 'selection')
     if (selection && selection.toString()) {
