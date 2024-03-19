@@ -11,6 +11,7 @@ function AnalyzePoem () {
 
   // useEffect to fetch the poem data asynchronously
   useEffect(() => {
+    console.log('in useEffect 1')
     const fetchPoem = async () => {
       try {
         const updatedPoem = await getOrAddPoemToDb(initialState);

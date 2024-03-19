@@ -24,23 +24,21 @@ function PoemExplorer() {
     }
   };
 
-  // Fetch random poems on mount
-  useEffect(() => {
-    fetchRandomPoems();
-  }, []);
-
   // Effect to fetch random poems when the search query is cleared
   useEffect(() => {
+		console.log('in useEffect 2')
     if (query === '') {
       fetchRandomPoems();
     }
   }, [query]);
 
   const handleInputChange = (e) => {
+		console.log('in handleInputChange')
     setQuery(e.target.value);
   };
 
   const handleSearch = async (e) => {
+		console.log('in handleSearch')
     e.preventDefault();
     if (!query) return; // Early return if query is empty
 
