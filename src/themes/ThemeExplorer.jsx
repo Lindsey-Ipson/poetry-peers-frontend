@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import BackendApi from '../common/backendApi';
+
 
 function ThemeExplorer() {
 	const [themes, setThemes] = useState([]);
 
 	const navigate = useNavigate();
-
-	// }; 
+ 
   const fetchThemesWithPoems = async () => {
     let themesData = await BackendApi.getThemes();
     for (let themeData of themesData) {
@@ -31,12 +30,14 @@ function ThemeExplorer() {
     console.log('themesData:', themesData);
     setThemes(themesData);
   };
-  
-
 
 	useEffect(() => {
 		fetchThemesWithPoems();
 	}, []);
+
+  const handlePoemClick = (poem) => {
+    navigate(`/poems/${poem.id}`, { state: { data: poem } });
+  };
 
   return (
     <div>
@@ -48,14 +49,14 @@ function ThemeExplorer() {
               <div className="ms-2 me-auto">
                 <div className="fw-bold">{theme.name}</div>
                 {theme.poems.map((poem) => (
-                  <p key={poem.id}><b>{poem.title}</b></p>
+                  <p key={poem.id}
+                  onClick={() => theme.poems.length > 0 && handlePoemClick(poem)}> 
+                    {poem.title} by {poem.author}</p>
                 ))}
               </div>
                 <span className="badge badge-primary rounded-pill" style={{ color: "blue" }}>
-                  {theme.poems.length !== 1 ? `${theme.poems.length} poems` : '1 poem'}
-                  
-                </span>
-              
+                  {theme.poems.length !== 1 ? `${theme.poems.length} poems` : '1 poem'}                
+                </span>             
             </li>
           </React.Fragment>
         ))}
