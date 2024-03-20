@@ -6,6 +6,8 @@ import backendApi from '../common/backendApi';
 import { lightColors} from './poemUtils';
 import { Toast } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { formatDateFromDatetime } from '../common/generalUtils';
+import './AnalyzePoem.css';
 
 function AnalyzePoem() {
   const navigate = useNavigate();
@@ -18,19 +20,22 @@ function AnalyzePoem() {
 
 	const [showToast, setShowToast] = useState(false);
   const [toastPosition, setToastPosition] = useState({ x: 0, y: 0 });
-	const [toastContent, setToastContent] = useState('');
+	const [toastContent, setToastContent] = useState({});
 
 	let selectedIndices;
 
-	  // Handle hover on badge to show toast
-		const handleBadgeHover = (event, themeName) => {
+	  // Handle click on badge to show toast
+		const handleBadgeClick = (event, themeName, username, datetime, analysis, themeColor) => {
+			console.log('badge clicked')
+			event.stopPropagation(); // Prevent event from bubbling up
 			const rect = event.target.getBoundingClientRect();
 			const posX = rect.left + window.scrollX + rect.width / 2; // Center X of the badge
 			const posY = rect.top + window.scrollY; // Top Y of the badge
 			setToastPosition({ x: posX, y: posY });
-			setToastContent(themeName);
+			const formattedDate = formatDateFromDatetime(datetime);
+			setToastContent({themeName, themeColor, username, formattedDate, analysis, themeColor});
 			setShowToast(true);
-		};
+		}; // tag.themeName, tag.username, tag.datetime, tag.color
 
 		// Toast initialization and display logic
 		useEffect(() => {
@@ -65,7 +70,8 @@ function AnalyzePoem() {
 	const handleTextSelection = (event) => {
 		const selection = window.getSelection();
 
-		if (selection && selection.toString()) {
+		// Check if there's actual text selected and not just click
+			if (selection && selection.toString().trim().length > 0) { 
 			const range = selection.getRangeAt(0);
 			const selectedElements = range.cloneContents().querySelectorAll('p');
 			selectedIndices = Array.from(selectedElements).map((element) =>
@@ -77,10 +83,10 @@ function AnalyzePoem() {
 				const key = selectedElement.getAttribute('data-key');
 				selectedIndices = [parseInt(key)];
 			}
+			navigate('/poems/CreateTagForm', {
+				state: { data: { selectedIndices, poem, currentUser } },
+			});
 		}
-		navigate('/poems/CreateTagForm', {
-			state: { data: { selectedIndices, poem, currentUser } },
-		});
 	};
 
   if (!poem) {
@@ -88,26 +94,27 @@ function AnalyzePoem() {
   }
 
 	return (
-    <div className="AnalyzePoem container-fluid text-center">
-      {/* Toast container adjusted for hover functionality */}
-      <div
-        className="toast-container position-fixed"
-        style={{ left: `${toastPosition.x}px`, top: `${toastPosition.y}px`, display: showToast ? 'block' : 'none' }}
-      >
-        <div id="liveToast" className="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div className="toast-header">
-            <strong className="me-auto">Theme</strong>
-            <button type="button" className="btn-close" data-bs-dismiss="toast" onClick={() => setShowToast(false)}></button>
-          </div>
-          <div className="toast-body">
-            {toastContent}
-          </div>
-        </div>
+	<div className="AnalyzePoem container-fluid text-center">
+  <div
+    className="toast-container position-fixed"
+    style={{ left: `${toastPosition.x}px`, top: `${toastPosition.y}px`, display: showToast ? 'block' : 'none' }}
+  >
+    <div id="liveToast" className="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"
+         style={{ backgroundColor: '#fff', borderRadius: '.25rem' }}> {/* Add border-radius here */}
+      <div className="toast-header" style={{ backgroundColor: toastContent.themeColor, borderTopLeftRadius: '.25rem', borderTopRightRadius: '.25rem' }}>
+        <strong className="me-auto" style={{color: "white"}}>{toastContent.themeName}</strong>
+        <button type="button" className="btn-close" data-bs-dismiss="toast" onClick={() => setShowToast(false)}></button>
       </div>
+      <div className="toast-body" style={{ backgroundColor: '#fff', borderBottomLeftRadius: '.25rem', borderBottomRightRadius: '.25rem' }}>
+        <small>Submitted by <b>{toastContent.username}</b> on <b>{toastContent.formattedDate}</b></small>
+        <p><b>Analysis:</b> {toastContent.analysis}</p>
+      </div>
+    </div>
+  </div>
 
       <h1>{poem.title}</h1>
       <h2>{poem.author}</h2>
-      <div className="AnalyzePoems-poemLines">
+      <div className="AnalyzePoems-poemLines" onMouseUp={handleTextSelection}>
         {poem.lines.map((line, index) => {
           const highlightedTags = tags.filter((tag) => tag.highlightedLines.includes(index));
           return (
@@ -118,7 +125,7 @@ function AnalyzePoem() {
                   key={tagIndex}
                   className="badge"
                   style={{ backgroundColor: tag.color, color: 'white', cursor: 'pointer' }}
-                  onClick={(e) => handleBadgeHover(e, tag.themeName)}
+                  onClick={(e) => handleBadgeClick(e, tag.themeName, tag.username, tag.datetime, tag.analysis, tag.color)}
                 >
                   {tag.themeName}
                 </span>
