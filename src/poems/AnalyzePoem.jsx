@@ -7,7 +7,6 @@ import { lightColors} from './poemUtils';
 import { Toast } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 function AnalyzePoem() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,8 +16,6 @@ function AnalyzePoem() {
   const [poem, setPoem] = useState(initialState);
   const [tags, setTags] = useState([]);
 
-	// const toastTriggerRef = useRef(null);
-  // const toastRef = useRef(null);
 	const [showToast, setShowToast] = useState(false);
   const [toastPosition, setToastPosition] = useState({ x: 0, y: 0 });
 	const [toastContent, setToastContent] = useState('');
@@ -35,40 +32,14 @@ function AnalyzePoem() {
 			setShowToast(true);
 		};
 
-  // // Adjust this function to handle the toast appearance
-  // const handleShowToastAtPosition = (event) => {
-  //   const { clientX, clientY } = event;
-  //   setToastPosition({ x: clientX, y: clientY });
-  //   setShowToast(true);
-  // };
-
-  // useEffect(() => {
-  //   let toastEl = document.getElementById('liveToast');
-  //   if (showToast && toastEl) {
-  //     const toast = new Toast(toastEl);
-  //     toast.show();
-  //   }
-  // }, [showToast, toastPosition]);
-
-	  // Automatically hide toast after a delay
-		// useEffect(() => {
-		// 	let timeoutId;
-		// 	if (showToast) {
-		// 		timeoutId = setTimeout(() => {
-		// 			setShowToast(false);
-		// 		}, 3000); // Hide toast after 3 seconds
-		// 	}
-		// 	return () => clearTimeout(timeoutId);
-		// }, [showToast]);
-
-		  // Toast initialization and display logic
-			useEffect(() => {
-				let toastEl = document.getElementById('liveToast');
-				if (showToast && toastEl) {
-					const toast = new Toast(toastEl);
-					toast.show();
-				}
-			}, [showToast, toastPosition, toastContent]);
+		// Toast initialization and display logic
+		useEffect(() => {
+			let toastEl = document.getElementById('liveToast');
+			if (showToast && toastEl) {
+				const toast = new Toast(toastEl);
+				toast.show();
+			}
+		}, [showToast, toastPosition, toastContent]);
 
 
   useEffect(() => {
@@ -88,23 +59,6 @@ function AnalyzePoem() {
 
     fetchPoemAndTags();
 
-    // Toast logic
-    // const toastTrigger = toastTriggerRef.current;
-    // const toastEl = toastRef.current;
-
-		// if (toastTrigger && toastEl) {
-		// 	const toast = new Toast(toastEl); // Use the imported Toast
-		// 	toastTrigger.addEventListener('click', () => {
-		// 		toast.show();
-		// 	});
-		
-		// 	// Cleanup
-		// 	return () => {
-		// 		toastTrigger.removeEventListener('click', () => {
-		// 			toast.show();
-		// 		});
-		// 	};
-		// }
   }, [initialState]); // Adjust useEffect dependencies as needed
 
 
@@ -164,7 +118,7 @@ function AnalyzePoem() {
                   key={tagIndex}
                   className="badge"
                   style={{ backgroundColor: tag.color, color: 'white', cursor: 'pointer' }}
-                  onMouseEnter={(e) => handleBadgeHover(e, tag.themeName)}
+                  onClick={(e) => handleBadgeHover(e, tag.themeName)}
                 >
                   {tag.themeName}
                 </span>
@@ -175,58 +129,6 @@ function AnalyzePoem() {
       </div>
     </div>
   );
-// return (
-// 	<div className="AnalyzePoem container-fluid text-center">
-
-// 		{/* Assuming this button triggers the toast for demonstration */}
-// 		<button type="button" className="btn btn-primary" onClick={handleShowToastAtPosition}>
-//         Show live toast
-//       </button>
-
-//       {/* Adjusted toast container */}
-//       <div
-//         className="toast-container position-fixed"
-//         style={{ left: `${toastPosition.x}px`, top: `${toastPosition.y}px`, display: showToast ? 'block' : 'none' }}
-//       >
-//         <div id="liveToast" className="toast" role="alert" aria-live="assertive" aria-atomic="true">
-//           <div className="toast-header">
-//             <strong className="me-auto">Bootstrap</strong>
-//             <button type="button" className="btn-close" data-bs-dismiss="toast" onClick={() => setShowToast(false)}></button>
-//           </div>
-//           <div className="toast-body">
-//             Hello, world! This is a toast message.
-//           </div>
-//         </div>
-//       </div>
-		
-// 		{/* Rest of your component */}
-
-//        <h1>{poem.title}</h1>
-//        <h2>{poem.author}</h2>
-//        <div className="AnalyzePoems-poemLines" onMouseUp={handleTextSelection}>
-//          {poem.lines.map((line, index) => {
-//           const highlightedTags = tags.filter((tag) =>
-//             tag.highlightedLines.includes(index)
-//           );
-//           return (
-//             <p
-//               key={index}
-//               data-key={index}
-//               className={highlightedTags.length > 0 ? 'highlighted' : ''}
-//             >
-//               {line}{' '}
-//               {highlightedTags.map((tag, tagIndex) => (
-// 								<span key={tagIndex} className="badge" style={{ backgroundColor: tag.color, color: 'white' }}>
-//                   {tag.themeName}
-//                 </span>
-//               ))}
-//             </p>
-//           );
-//         })}
-//       </div>
-
-// 	</div>
-// );
 
 }
 
