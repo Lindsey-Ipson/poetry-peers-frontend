@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import UserContext from '../common/UserContext';
-import './navbar.css';
 import { Collapse } from 'bootstrap';
 
 function NavBar({ logout }) {
@@ -33,6 +32,11 @@ function NavBar({ logout }) {
 				</NavLink>
 			</li>
 			<li className="nav-item">
+				<NavLink to="/contributions" className="nav-link">
+					Contributons
+				</NavLink>
+			</li>
+			<li className="nav-item">
 				<NavLink to="/" onClick={logout} className="nav-link">
 					Logout {currentUser && currentUser.username}
 				</NavLink>
@@ -59,7 +63,7 @@ function NavBar({ logout }) {
 		<nav className="navbar navbar-expand-md navbar-light bg-light fixed-top">
 			<div className="container-fluid">
 				<NavLink to="/" className="navbar-brand">
-					Jobly
+					Poetry Peers
 				</NavLink>
 
 				<button

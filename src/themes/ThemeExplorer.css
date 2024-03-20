@@ -15,15 +15,15 @@
   text-decoration: underline;
 }
 
-.ThemeExplorer.poem-count {
+.ThemeExplorer-poem-count {
   color: rgb(41, 117, 20);
 }
 
-.ThemeExplorer.poem-title {
+.ThemeExplorer-poem-title {
   color: rgb(0, 85, 255);
 }
 
-.ThemeExplorer.theme-name {
+.ThemeExplorer-theme-name {
   color: rgb(92, 39, 144);
 }
 

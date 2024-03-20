@@ -7,21 +7,38 @@ const BASE_URL = 'http://localhost:3001';
 class BackendApi {
 	static token;
 
+	// static async request(endpoint, data = {}, method = 'get') {
+	// 	console.debug('API Call:', endpoint, data, method);
+
+	// 	const url = `${BASE_URL}/${endpoint}`;
+	// 	const headers = { Authorization: `Bearer ${BackendApi.token}` };
+	// 	const params = method === 'get' ? data : {};
+
+	// 	try {
+	// 		return (await axios({ url, method, data, params, headers })).data;
+	// 	} catch (err) {
+	// 		console.error('API Error:', err.response);
+	// 		let message = err.response.data.error.message;
+	// 		throw Array.isArray(message) ? message : [message];
+	// 	}
+	// }
 	static async request(endpoint, data = {}, method = 'get') {
 		console.debug('API Call:', endpoint, data, method);
-
+	
 		const url = `${BASE_URL}/${endpoint}`;
 		const headers = { Authorization: `Bearer ${BackendApi.token}` };
-		const params = method === 'get' ? data : {};
-
+		// Adjust params so that delete requests also send params correctly
+		const params = (method === 'get' || method === 'delete') ? data : {};
+	
 		try {
-			return (await axios({ url, method, data, params, headers })).data;
+			return (await axios({ url, method, data: (method === 'get' || method === 'delete') ? {} : data, params, headers })).data;
 		} catch (err) {
 			console.error('API Error:', err.response);
 			let message = err.response.data.error.message;
 			throw Array.isArray(message) ? message : [message];
 		}
 	}
+	
 
 	// User Methods
 
@@ -99,7 +116,22 @@ class BackendApi {
 	static async getTagsByThemeName(themeName) {
   let res = await this.request(`tags/by-theme/${themeName}`);
   return res.tags;
-}
+	}
+
+	static async deleteTag(themeName, poemId, highlightedLines) {
+		console.log('themeName:', themeName);
+		console.log('poemId:', poemId);
+		console.log('highlightedLines:', highlightedLines);
+		console.log('^ in deleteTag')
+		const params = {
+			themeName,
+			poemId,
+			highlightedLines: highlightedLines.join(','),
+		};
+		console.log('params:', params);
+		let res = await this.request('tags', params, 'delete');
+		return res.message;
+	}
 
 	// Theme Methods
 
@@ -113,7 +145,7 @@ class BackendApi {
 		let res = await this.request('themes', params, 'get');
 		return res.themes;
 	}
-	
+
 }
 
 export default BackendApi;

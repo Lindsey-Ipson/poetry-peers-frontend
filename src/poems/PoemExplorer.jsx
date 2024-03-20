@@ -107,9 +107,9 @@ function PoemExplorer () {
       <br></br>
       {resultsAreRandom && <h2>Here are 20 random poems to explore:</h2>}
       <div className="row justify-content-md-center">
-        {poems.map((poem) => (
+        {/* {poems.map((poem) => (
           <>
-            <div className="col-lg-4">
+            <div className="col-lg-4" key={uuidv4()}>
               <div
                 className="card poem-card"
                 key={uuidv4()}
@@ -135,7 +135,34 @@ function PoemExplorer () {
               <br />
             </div>
           </>
+        ))} */}
+        {poems.map((poem) => (
+          <div className="col-lg-4" key={uuidv4()}> {/* Move the key here */}
+            <div
+              className="card poem-card"
+              onClick={() => routeToPoem(poem)}
+            >
+              <div className="card-header">
+                <strong>{poem.title}</strong> - <em>by {poem.author}</em>
+              </div>
+              <div className="card-body">
+                {poem.lines.slice(0, 5).map((line, index) => (
+                  <p key={index} className="card-text"> {/* Use index as key here */}
+                    {line}
+                  </p>
+                ))}
+                <p className="card-text"> {/* This doesn't need a key as it's not part of a list */}
+                  ...
+                </p>
+                <a href="#" className="btn btn-primary">
+                  Analyze
+                </a>
+              </div>
+            </div>
+            <br />
+          </div>
         ))}
+
       </div>
     </div>
   );
