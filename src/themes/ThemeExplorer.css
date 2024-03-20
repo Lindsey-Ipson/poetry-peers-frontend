@@ -1,0 +1,34 @@
+.container {
+  max-width: 60%;
+  margin: auto;
+  padding-top: 20px;
+}
+
+.poem-item {
+  cursor: pointer;
+  color: #0056b3; 
+  transition: color 0.2s ease-in-out;
+}
+
+.poem-item:hover {
+  color: #003580;
+  text-decoration: underline;
+}
+
+.ThemeExplorer.poem-count {
+  color: rgb(41, 117, 20);
+}
+
+.ThemeExplorer.poem-title {
+  color: rgb(0, 85, 255);
+}
+
+.ThemeExplorer.theme-name {
+  color: rgb(92, 39, 144);
+}
+
+.ThemeExplorer.container {
+  max-width: 550px;
+  margin: auto;
+  padding-top: 20px;
+}
