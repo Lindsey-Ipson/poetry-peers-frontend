@@ -16,10 +16,9 @@ function PoemExplorer () {
     try {
       const response = await fetch("https://poetrydb.org/random/20");
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`Error connecting with PoetryDB external API. Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
       setResultsAreRandom(true);
       setPoems(data);
     } catch (error) {
@@ -54,7 +53,7 @@ function PoemExplorer () {
       const data = await response.json();
       setPoems(data);
     } catch (error) {
-      console.error("Failed to fetch poems:", error);
+      console.error("Could not fetch poems:", error);
     }
     setLoading(false);
   };

@@ -28,6 +28,11 @@ function NavBar({ logout }) {
 				</NavLink>
 			</li>
 			<li className="nav-item">
+				<NavLink to="/themes" className="nav-link">
+					Themes
+				</NavLink>
+			</li>
+			<li className="nav-item">
 				<NavLink to="/" onClick={logout} className="nav-link">
 					Logout {currentUser && currentUser.username}
 				</NavLink>
