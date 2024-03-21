@@ -40,7 +40,7 @@ function PoemExplorer () {
 
   const handleSearch = async (e) => {
     setLoading(true);
-    setPoems([]);
+
     e.preventDefault();
     if (!query) return; // Early return if query is empty
 

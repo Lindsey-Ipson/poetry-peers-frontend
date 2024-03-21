@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import BackendApi from '../common/backendApi';
@@ -8,6 +7,8 @@ import './ThemeExplorer.css';
 
 function ThemeExplorer () {
 	const [themes, setThemes] = useState([]);
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
  
@@ -28,13 +29,54 @@ function ThemeExplorer () {
         }
       }
     }
-    console.log('themesData:', themesData);
+
     setThemes(themesData);
   };
 
 	useEffect(() => {
 		fetchThemesWithPoems();
 	}, []);
+
+
+  // Effect to fetch all themes again when the search query is cleared
+  useEffect(() => {
+    if (query === "") {
+      fetchThemesWithPoems();
+    }
+  }, [query]);
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const handleSearch = async (e) => {
+    setLoading(true);
+
+    e.preventDefault();
+    if (!query) return; // Early return if query is empty
+
+    let themesData = await BackendApi.getThemes(query);
+
+    for (let themeData of themesData) {
+      let tagsForTheme = await BackendApi.getTagsByThemeName(themeData.name);
+      // Initialize poems as an empty array to accumulate poems
+      themeData.poems = [];
+  
+      for (let tag of tagsForTheme) {
+        let poemForTag = await BackendApi.getPoemById(tag.poemId);
+        // Check if the poem is already in the themeData.poems array
+        const isPoemAlreadyAdded = themeData.poems.find(poem => poem.id === poemForTag.id);
+        // Only push the poem if it wasn't found
+        if (!isPoemAlreadyAdded) {
+          themeData.poems.push(poemForTag);
+        }
+      }
+    }
+
+    setThemes(themesData);
+    setLoading(false);
+  };
+
 
   const handlePoemClick = (poem) => {
     navigate(`/poems/${poem.id}`, { state: { data: poem } });
@@ -43,6 +85,38 @@ function ThemeExplorer () {
   return (
     <div className="ThemeExplorer container mt-5">
       <h1 className="text-center mb-4">Themes</h1>
+
+      <form onSubmit={handleSearch}>
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="i.e: The Raven"
+                  value={query}
+                  onChange={handleInputChange}
+                  disabled={loading}
+                />
+                <button
+                  className="btn btn-outline-secondary"
+                  type="action"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>{" "}
+                      Loading...
+                    </>
+                  ) : (
+                    "Search"
+                  )}
+                </button>
+              </div>
+            </form>
+
       <ul className="list-group ">
         {themes.map((theme) => (
           <li key={uuidv4()} className="list-group-item">

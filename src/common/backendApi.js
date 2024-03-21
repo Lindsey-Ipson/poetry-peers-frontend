@@ -119,16 +119,11 @@ class BackendApi {
 	}
 
 	static async deleteTag(themeName, poemId, highlightedLines) {
-		console.log('themeName:', themeName);
-		console.log('poemId:', poemId);
-		console.log('highlightedLines:', highlightedLines);
-		console.log('^ in deleteTag')
 		const params = {
 			themeName,
 			poemId,
 			highlightedLines: highlightedLines.join(','),
 		};
-		console.log('params:', params);
 		let res = await this.request('tags', params, 'delete');
 		return res.message;
 	}

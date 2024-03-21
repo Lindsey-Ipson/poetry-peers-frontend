@@ -40,11 +40,10 @@ function AnalyzePoem() {
 		const formattedDate = formatDateFromDatetime(datetime);
 		setToastContent({
 			themeName,
-			themeColor,
 			username,
 			formattedDate,
 			analysis,
-			themeColor,
+			themeColor
 		});
 		setShowToast(true);
 	};
