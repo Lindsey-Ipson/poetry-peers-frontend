@@ -37,7 +37,6 @@ function ThemeExplorer () {
 		fetchThemesWithPoems();
 	}, []);
 
-
   // Effect to fetch all themes again when the search query is cleared
   useEffect(() => {
     if (query === "") {
@@ -50,32 +49,34 @@ function ThemeExplorer () {
   };
 
   const handleSearch = async (e) => {
-    setLoading(true);
-
     e.preventDefault();
-    if (!query) return; // Early return if query is empty
-
-    let themesData = await BackendApi.getThemes(query);
-
-    for (let themeData of themesData) {
-      let tagsForTheme = await BackendApi.getTagsByThemeName(themeData.name);
-      // Initialize poems as an empty array to accumulate poems
-      themeData.poems = [];
-  
-      for (let tag of tagsForTheme) {
-        let poemForTag = await BackendApi.getPoemById(tag.poemId);
-        // Check if the poem is already in the themeData.poems array
-        const isPoemAlreadyAdded = themeData.poems.find(poem => poem.id === poemForTag.id);
-        // Only push the poem if it wasn't found
-        if (!isPoemAlreadyAdded) {
-          themeData.poems.push(poemForTag);
+    setLoading(true);
+    
+    try {
+      if (!query) {
+        fetchThemesWithPoems();
+      } else {
+        let themesData = await BackendApi.getThemes(query);
+    
+        for (let themeData of themesData) {
+          let tagsForTheme = await BackendApi.getTagsByThemeName(themeData.name);
+          themeData.poems = [];
+        
+          for (let tag of tagsForTheme) {
+            let poemForTag = await BackendApi.getPoemById(tag.poemId);
+            const isPoemAlreadyAdded = themeData.poems.find(poem => poem.id === poemForTag.id);
+            if (!isPoemAlreadyAdded) {
+              themeData.poems.push(poemForTag);
+            }
+          }
         }
-      }
+        setThemes(themesData);
+        }
+    } finally {
+      setLoading(false);
     }
+};
 
-    setThemes(themesData);
-    setLoading(false);
-  };
 
 
   const handlePoemClick = (poem) => {

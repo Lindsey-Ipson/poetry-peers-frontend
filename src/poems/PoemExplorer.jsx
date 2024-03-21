@@ -38,25 +38,33 @@ function PoemExplorer () {
     setQuery(e.target.value);
   };
 
+
   const handleSearch = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
-    e.preventDefault();
-    if (!query) return; // Early return if query is empty
-
-    setResultsAreRandom(false);
     try {
-      const response = await fetch(`https://poetrydb.org/title/${query}`);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+      if (!query) {
+        fetchRandomPoems();
+      } else {
+        setResultsAreRandom(false);
+
+        try {
+          const response = await fetch(`https://poetrydb.org/title/${query}`);
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+          const data = await response.json();
+          setPoems(data);
+        } catch (error) {
+          console.error("Could not fetch poems:", error);
+        }
       }
-      const data = await response.json();
-      setPoems(data);
-    } catch (error) {
-      console.error("Could not fetch poems:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  };
+};
+
 
   const handleRouteToPoem = (poem) => {
     let hashedId = hashPoem(poem);
