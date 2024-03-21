@@ -8,7 +8,7 @@ function CreateTagForm() {
   const location = useLocation();
   const initialState = location.state?.data;
   const [themes, setThemes] = useState(null);
-  const [selectedTheme, setSelectedTheme] = useState(null);
+  const [selectedTheme, setSelectedTheme] = useState("");
   const [customTheme, setCustomTheme] = useState("");
   const [analysis, setAnalysis] = useState("");
   const [show, setShow] = useState(true);
@@ -18,14 +18,11 @@ function CreateTagForm() {
 		navigate(`/poems/${poem.id}`, { state: { data: poem } });
 	}
 
-
   const handleShow = () => setShow(true);
 
   const { selectedIndices, poem, currentUser } = initialState || {};
 
   useEffect(() => {
-    console.log("Component mounted");
-
     const fetchThemes = async () => {
       try {
         const themesData = await backendApi.getThemes();
@@ -81,6 +78,7 @@ function CreateTagForm() {
   };
 
   const handleCustomThemeChange = (event) => {
+		setSelectedTheme("");
     setCustomTheme(event.target.value);
   };
 
@@ -172,7 +170,7 @@ function CreateTagForm() {
                         id="custom-theme"
                         name="theme"
                         value=""
-                        checked={!selectedTheme && !customTheme}
+                        checked={!selectedTheme}
                         onChange={() => setSelectedTheme("")} // Unselect theme when custom input is used
                         className="form-check-input"
                       />
@@ -180,7 +178,7 @@ function CreateTagForm() {
                         className="form-check-label"
                         htmlFor="custom-theme"
                       >
-                        {"  Other"}
+                        <b>{"  Other"}</b>
                       </label>
                       <input
                         type="text"
