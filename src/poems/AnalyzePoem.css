@@ -2,3 +2,7 @@ small {
   color: gray;
   font-style: italic;
 }
+
+.AnalyzePoems-poemLines {
+  margin-top: 30px;
+}

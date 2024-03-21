@@ -24,7 +24,6 @@ function AnalyzePoem() {
 
 	let selectedIndices;
 
-	// Handle click on badge to show toast
 	const handleBadgeClick = (
 		event,
 		themeName,
@@ -123,7 +122,7 @@ function AnalyzePoem() {
 					style={{ backgroundColor: '#fff', borderRadius: '.25rem' }}
 				>
 					{' '}
-					{/* Add border-radius here */}
+	
 					<div
 						className="toast-header"
 						style={{
@@ -162,41 +161,48 @@ function AnalyzePoem() {
 			</div>
 
 			<h1>{poem.title}</h1>
-			<h2>{poem.author}</h2>
+			<h2>by {poem.author}</h2>
+
 			<div className="AnalyzePoems-poemLines" onMouseUp={handleTextSelection}>
-				{poem.lines.map((line, index) => {
-					const highlightedTags = tags.filter((tag) =>
-						tag.highlightedLines.includes(index)
-					);
-					return (
-						<p key={index} data-key={index}>
-							{line}{' '}
-							{highlightedTags.map((tag, tagIndex) => (
-								<span
-									key={tagIndex}
-									className="badge"
-									style={{
-										backgroundColor: tag.color,
-										color: 'white',
-										cursor: 'pointer',
-									}}
-									onClick={(e) =>
-										handleBadgeClick(
-											e,
-											tag.themeName,
-											tag.username,
-											tag.datetime,
-											tag.analysis,
-											tag.color
-										)
-									}
-								>
-									{tag.themeName}
-								</span>
-							))}
-						</p>
-					);
-				})}
+			  {poem.lines.map((line, index) => {
+			    // Check if line is an empty string to determine how to render
+			    if (line.trim() === '') {
+			      // Render a simple paragraph for empty lines to maintain visual spacing
+			      return <p key={index} data-key={index}>&nbsp;</p>;
+			    } else {
+			      // For non-empty lines, filter tags that highlight this line
+			      const highlightedTags = tags.filter((tag) => tag.highlightedLines.includes(index));
+			      return (
+			        <p key={index} data-key={index}>
+			          {line}{' '}
+			          {highlightedTags.map((tag, tagIndex) => (
+			            // Only render badges for non-empty lines
+			            <span
+			              key={tagIndex}
+			              className="badge"
+			              style={{
+			                backgroundColor: tag.color,
+			                color: 'white',
+			                cursor: 'pointer',
+			              }}
+			              onClick={(e) =>
+			                handleBadgeClick(
+			                  e,
+			                  tag.themeName,
+			                  tag.username,
+			                  tag.datetime,
+			                  tag.analysis,
+			                  tag.color
+			                )
+			              }
+			            >
+			              {tag.themeName}
+			            </span>
+			          ))}
+			        </p>
+			      );
+			    }
+			  })}
 			</div>
 		</div>
 	);

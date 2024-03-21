@@ -58,7 +58,7 @@ function PoemExplorer () {
     setLoading(false);
   };
 
-  const routeToPoem = (poem) => {
+  const handleRouteToPoem = (poem) => {
     let hashedId = hashPoem(poem);
     poem.id = hashedId;
     navigate(`/poems/${hashedId}`, { state: { data: poem } });
@@ -113,7 +113,7 @@ function PoemExplorer () {
               <div
                 className="card poem-card"
                 key={uuidv4()}
-                onClick={() => routeToPoem(poem)}
+                onClick={() => handleRouteToPoem(poem)}
               >
                 <div className="card-header">
                   <strong>{poem.title}</strong> - <em>by {poem.author}</em>
@@ -140,7 +140,7 @@ function PoemExplorer () {
           <div className="col-lg-4" key={uuidv4()}> {/* Move the key here */}
             <div
               className="card poem-card"
-              onClick={() => routeToPoem(poem)}
+              onClick={() => handleRouteToPoem(poem)}
             >
               <div className="card-header">
                 <strong>{poem.title}</strong> - <em>by {poem.author}</em>
