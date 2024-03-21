@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getOrAddPoemToDb } from './poemUtils';
 import UserContext from '../common/UserContext';
 import BackendApi from '../common/backendApi';
@@ -9,9 +9,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { formatDateFromDatetime } from '../common/generalUtils';
 import './AnalyzePoem.css';
 
-function AnalyzePoem() {
+function AnalyzePoem () {
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	const { poemId } = useParams();
+
 	const initialState = location.state?.data;
 
 	const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -60,21 +63,37 @@ function AnalyzePoem() {
 	useEffect(() => {
 		const fetchPoemAndTags = async () => {
 			try {
-				const updatedPoem = await getOrAddPoemToDb(initialState);
-				const poemTags = await BackendApi.getTagsByPoemId(updatedPoem.id);
-				setPoem(updatedPoem);
-				for (let i = 0; i < poemTags.length; i++) {
-					poemTags[i].color = lightColors[i % lightColors.length]; // Ensure cycling through colors if more tags than colors
+				let fetchedPoem;
+
+				// Check if initialState is available; if not, fetch the poem by ID
+				if (poemId && !initialState) {
+					try {
+						fetchedPoem = await BackendApi.getPoemById(poemId);
+					} catch (error) {
+						console.error('Failed to fetch poem:', error);
+						navigate('/poems', { state: { alert: true, message: 'Poem does not exist. Please try again.' } });
+					}
+				} else {
+					fetchedPoem = await getOrAddPoemToDb(initialState);
 				}
+	
+				const poemTags = await BackendApi.getTagsByPoemId(fetchedPoem.id);
+				setPoem(fetchedPoem);
+	
+				for (let i = 0; i < poemTags.length; i++) {
+					poemTags[i].color = lightColors[i % lightColors.length];
+				}
+	
 				setTags(poemTags);
 			} catch (error) {
-				console.error('Failed to fetch or add poem:', error);
+				console.error('Failed to add poem to database and/or retrieve tags:', error);
+				navigate('/poems', { state: { alert: true, message: 'Poem currently unavailable. Please try again.' } });
 			}
 		};
-
+	
 		fetchPoemAndTags();
-	}, [initialState]);
-
+	}, [initialState, poemId]);
+	
 	const handleTextSelection = (event) => {
 		const selection = window.getSelection();
 
@@ -159,13 +178,7 @@ function AnalyzePoem() {
 				</div>
 			</div>
 
-
-
 			<div className="AnalyzePoem-poem">
-
-
-
-
 
 			<h1>{poem.title}</h1>
 			<h2>by {poem.author}</h2>
@@ -184,11 +197,6 @@ function AnalyzePoem() {
 			          {line}{' '}
 			          {highlightedTags.map((tag, tagIndex) => (
 			            // Only render badges for non-empty lines
-
-									
-
-
-
 			            <span
 			              key={tagIndex}
 			              className="badge"
@@ -210,27 +218,13 @@ function AnalyzePoem() {
 			            >
 			              {tag.themeName}
 			            </span>
-
-									
-
-
-
-
 			          ))}
 			        </p>
 			      );
 			    }
 			  })}
 			</div>
-
-
 			</div>
-
-
-
-
-
-
 		</div>
 	);
 }

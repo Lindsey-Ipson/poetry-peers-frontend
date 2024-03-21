@@ -15,6 +15,15 @@ function ThemeExplorer () {
     let themesData = await BackendApi.getThemes();
     for (let themeData of themesData) {
       let tagsForTheme = await BackendApi.getTagsByThemeName(themeData.name);
+
+
+
+      themeData.tags = tagsForTheme;
+
+
+
+
+
       // Initialize poems as an empty array to accumulate poems
       themeData.poems = [];
   
@@ -31,6 +40,15 @@ function ThemeExplorer () {
 
     setThemes(themesData);
   };
+
+  useEffect(() => {
+    console.log(themes);
+  }), [themes];
+
+
+
+
+
 
 	useEffect(() => {
 		fetchThemesWithPoems();

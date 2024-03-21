@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { hashPoem } from "./poemUtils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./PoemExplorer.css";
 
 function PoemExplorer () {
@@ -10,6 +10,9 @@ function PoemExplorer () {
   const [loading, setLoading] = useState(false);
   const [resultsAreRandom, setResultsAreRandom] = useState(false);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const [alertInfo, setAlertInfo] = useState({ show: false, message: '' });
 
   // Fetches 20 random poems
   const fetchRandomPoems = async () => {
@@ -34,6 +37,21 @@ function PoemExplorer () {
       fetchRandomPoems();
     }
   }, [query]);
+
+  // Check for state passed on navigation and set up the alert
+  useEffect(() => {
+    if (location.state?.alert) {
+      setAlertInfo({ show: true, message: location.state.message });
+
+      // Hide the alert after a few seconds
+      const timer = setTimeout(() => {
+        setAlertInfo({ show: false, message: '' });
+      }, 5000); // 5000ms = 5 seconds
+
+      // Clean up the timer if the component unmounts
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
@@ -63,7 +81,7 @@ function PoemExplorer () {
     } finally {
       setLoading(false);
     }
-};
+  };
 
   const handleRouteToPoem = (poem) => {
     let hashedId = hashPoem(poem);
@@ -73,6 +91,11 @@ function PoemExplorer () {
 
   return (
     <div className="PoemExplorer container-xl">
+
+      <div>
+        {alertInfo.show && <div className="alert alert-danger">{alertInfo.message}</div>}
+      </div>
+
       <h1>Explore Poems</h1>
       <div className="PoemExplorer-instructions">Search by title, or enjoy some random poems below</div>
       <div className="row ">

@@ -10,6 +10,7 @@ import AnalyzePoem from './poems/AnalyzePoem';
 import CreateTagForm from './poems/CreateTagForm';
 import ThemeExplorer from './themes/ThemeExplorer';
 import Contributions from './contributions/Contributions';
+import ViewTheme from './themes/ViewTheme';
 
 function RoutesList({ login, signup }) {
 	const { currentUser } = useContext(UserContext);
@@ -21,10 +22,11 @@ function RoutesList({ login, signup }) {
 			{currentUser && (
 				<>
 					<Route path="poems" element={<PoemExplorer />} />
-					<Route path="poems/:id" element={<AnalyzePoem />} />
+					<Route path="poems/:poemId" element={<AnalyzePoem />} />
 					<Route path="contributions" element={<Contributions />} />
 					<Route path="poems/CreateTagForm" element={<CreateTagForm />} />
 					<Route path="themes" element={<ThemeExplorer />} />
+					<Route path="themes/:themeName" element={<ViewTheme />} />
 					<Route path="profile" element={<EditProfileForm />} />
 				</>
 			)}

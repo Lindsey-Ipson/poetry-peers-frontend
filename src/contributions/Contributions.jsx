@@ -73,7 +73,7 @@ function Contributions() {
       <div className="Contributions-info">
         <h1>Your Contributions</h1>
         {deleteMessage && <div className="alert alert-success">{deleteMessage}</div>}
-        <h4>You've found {uniqueThemeNames.size} {uniqueThemeNames.size === 1 ? 'theme' : 'themes'} in {uniquePoemIds.size} {uniquePoemIds.size === 1 ? 'poem' : 'poems'}</h4>
+        <h4>You've identified {uniqueThemeNames.size} {uniqueThemeNames.size === 1 ? 'theme' : 'themes'} in {uniquePoemIds.size} {uniquePoemIds.size === 1 ? 'poem' : 'poems'}</h4>
         <h5>Your total tags: {tags.length}</h5>
       </div>
 
