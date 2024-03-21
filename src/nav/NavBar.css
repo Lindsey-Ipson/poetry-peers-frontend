@@ -1,0 +1,10 @@
+.NavBar img {
+  height: 32px;
+  border-radius: 10%;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
+.NavBar .navbar-brand {
+  margin-right: 30px;
+}

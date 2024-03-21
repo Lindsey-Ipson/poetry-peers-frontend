@@ -1,0 +1,21 @@
+body {
+  background-image: url('assets/ChalkboardImage.jpg'); 
+  background-repeat: repeat;
+  /* background-color: rgba(0, 0, 0, 0.853); */
+}
+
+h1 {
+  color: white;
+}
+
+.btn-danger {
+  background-color: rgb(137, 22, 41);
+  border-color: rgb(173, 51, 71);
+  color: white;
+}
+
+.btn-primary {
+  background-color: rgb(45, 51, 152);
+  border-color: rgb(45, 51, 152);
+  color: white;
+}

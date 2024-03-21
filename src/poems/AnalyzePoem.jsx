@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getOrAddPoemToDb } from './poemUtils';
 import UserContext from '../common/UserContext';
 import BackendApi from '../common/backendApi';
-import { lightColors } from './poemUtils';
+import { lightColors, darkenColor } from './poemUtils';
 import { Toast } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { formatDateFromDatetime } from '../common/generalUtils';
@@ -148,16 +148,24 @@ function AnalyzePoem() {
 							borderBottomRightRadius: '.25rem',
 						}}
 					>
-						<small>
+						<small className="AnalyzePoem-tag-author">
 							Submitted by <b>{toastContent.username}</b> on{' '}
 							<b>{toastContent.formattedDate}</b>
 						</small>
-						<p>
+						<p className="AnalyzePoem-tag-analysis">
 							<b>Analysis:</b> {toastContent.analysis}
 						</p>
 					</div>
 				</div>
 			</div>
+
+
+
+			<div className="AnalyzePoem-poem">
+
+
+
+
 
 			<h1>{poem.title}</h1>
 			<h2>by {poem.author}</h2>
@@ -176,6 +184,11 @@ function AnalyzePoem() {
 			          {line}{' '}
 			          {highlightedTags.map((tag, tagIndex) => (
 			            // Only render badges for non-empty lines
+
+									
+
+
+
 			            <span
 			              key={tagIndex}
 			              className="badge"
@@ -197,12 +210,27 @@ function AnalyzePoem() {
 			            >
 			              {tag.themeName}
 			            </span>
+
+									
+
+
+
+
 			          ))}
 			        </p>
 			      );
 			    }
 			  })}
 			</div>
+
+
+			</div>
+
+
+
+
+
+
 		</div>
 	);
 }

@@ -1,0 +1,20 @@
+.PoemExplorer h1 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.PoemExplorer-instructions {
+  text-align: center;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.PoemExplorer-button {
+  color: white !important;
+  border-color: white !important;
+  background-color: transparent !important;
+}
+
+.PoemExplorer h2 {
+  color: white;
+}

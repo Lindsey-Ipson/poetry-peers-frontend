@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import UserContext from '../common/UserContext';
 import { Collapse } from 'bootstrap';
+import './NavBar.css';
 
 function NavBar({ logout }) {
 	const { currentUser } = useContext(UserContext);
@@ -33,7 +34,7 @@ function NavBar({ logout }) {
 			</li>
 			<li className="nav-item">
 				<NavLink to="/contributions" className="nav-link">
-					Contributons
+					Contributions
 				</NavLink>
 			</li>
 			<li className="nav-item">
@@ -60,35 +61,36 @@ function NavBar({ logout }) {
 	);
 
 	const navBar = (
-		<nav className="navbar navbar-expand-md navbar-light bg-light fixed-top">
+		<nav className="NavBar navbar navbar-expand-md navbar-light bg-light fixed-top">
 			<div className="container-fluid">
 				<NavLink to="/" className="navbar-brand">
-					Poetry Peers
-				</NavLink>
-
+          <img src="/FountainPenTip.jpg" alt="logo" className="NavBar-logo"/>
+          Poetry Peers
+        </NavLink>
 				<button
 					onClick={handleNavbarToggler}
 					className="navbar-toggler"
 					type="button"
 					data-bs-toggle="collapse"
 					data-bs-target="#navbarToggle"
+					aria-controls="navbarToggle"
 					aria-expanded="false"
 					aria-label="Toggle navigation"
 				>
 					<span className="navbar-toggler-icon"></span>
 				</button>
-				<div className="collapse navbar-collapse" id="navbarToggle">
-					{/* <form class="d-flex" role="search"> */}
-					<ul className="navbar-nav ml-auto">
+	
+				<div className="collapse navbar-collapse justify-content-end" id="navbarToggle">
+					<ul className="navbar-nav">
 						{currentUser ? loggedInNavBarItems : loggedOutNavBarItems}
 					</ul>
-					{/* </form> */}
 				</div>
 			</div>
 		</nav>
 	);
-
+	
 	return navBar;
+	
 }
 
 export default NavBar;

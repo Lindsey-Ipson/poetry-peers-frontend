@@ -6,3 +6,45 @@ small {
 .AnalyzePoems-poemLines {
   margin-top: 30px;
 }
+
+.AnalyzePoem {
+  color: black;
+}
+
+.AnalyzePoem-poem {
+  background-color: rgba(255, 255, 255, 0.84);
+  margin-left: 200px;
+  margin-right: 200px;
+  border-radius: 10px;
+}
+
+.AnalyzePoem h1 {
+  margin-top: 30px;
+  padding-top: 15px;
+  color: black;
+}
+
+.AnalyzePoem-tag-analysis {
+  margin-top: 7px;
+}
+
+@media (max-width: 1100px) {
+  .AnalyzePoem-poem {
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+}
+
+@media (max-width: 900px) {
+  .AnalyzePoem-poem {
+    margin-left: 75px;
+    margin-right: 75px;
+  }
+}
+
+@media (max-width: 650px) {
+  .AnalyzePoem-poem {
+    margin-left: 0;
+    margin-right: 0; 
+  }
+}

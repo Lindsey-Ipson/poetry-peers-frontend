@@ -160,3 +160,11 @@ export const lightColors = [
 	'YellowGreen',
 	'DarkSalmon',
 ];
+
+export const darkenColor = (color, amount = 0.7) => {
+  let [r, g, b] = color.match(/\d+/g).map(Number);
+  r = Math.floor(r * amount);
+  g = Math.floor(g * amount);
+  b = Math.floor(b * amount);
+  return `rgb(${r}, ${g}, ${b})`;
+};

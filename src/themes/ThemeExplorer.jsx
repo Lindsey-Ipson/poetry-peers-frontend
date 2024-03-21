@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import BackendApi from '../common/backendApi';
 import './ThemeExplorer.css';
 
-
 function ThemeExplorer () {
 	const [themes, setThemes] = useState([]);
   const [query, setQuery] = useState("");
@@ -75,48 +74,46 @@ function ThemeExplorer () {
     } finally {
       setLoading(false);
     }
-};
-
-
+  };
 
   const handlePoemClick = (poem) => {
     navigate(`/poems/${poem.id}`, { state: { data: poem } });
   };
 
   return (
-    <div className="ThemeExplorer container mt-5">
+    <div className="ThemeExplorer container ">
       <h1 className="text-center mb-4">Themes</h1>
 
       <form onSubmit={handleSearch}>
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="i.e: The Raven"
-                  value={query}
-                  onChange={handleInputChange}
-                  disabled={loading}
-                />
-                <button
-                  className="btn btn-outline-secondary"
-                  type="action"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>{" "}
-                      Loading...
-                    </>
-                  ) : (
-                    "Search"
-                  )}
-                </button>
-              </div>
-            </form>
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="i.e. Friendship"
+            value={query}
+            onChange={handleInputChange}
+            disabled={loading}
+          />
+          <button
+            className="ThemeExplorer-button btn btn-outline-secondary"
+            type="action"
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>{" "}
+                Loading...
+              </>
+            ) : (
+              "Search"
+            )}
+          </button>
+        </div>
+        </form>
 
       <ul className="list-group ">
         {themes.map((theme) => (

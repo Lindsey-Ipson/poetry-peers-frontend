@@ -1,7 +1,7 @@
-.container {
+.ThemeExplorer.container {
   max-width: 60%;
-  margin: auto;
-  padding-top: 20px;
+  padding-top: 0px;
+  margin-top: 0px;
 }
 
 .poem-item {
@@ -16,19 +16,34 @@
 }
 
 .ThemeExplorer-poem-count {
-  color: rgb(41, 117, 20);
+  color: black;
 }
 
 .ThemeExplorer-poem-title {
-  color: rgb(0, 85, 255);
+  color: rgb(13, 65, 168);
 }
 
 .ThemeExplorer-theme-name {
-  color: rgb(92, 39, 144);
+  color: black;
 }
 
 .ThemeExplorer.container {
   max-width: 550px;
   margin: auto;
   padding-top: 20px;
+}
+
+.ThemeExplorer h1 {
+  text-align: center;
+  margin-top: 0px;
+}
+
+.ThemeExplorer form {
+  margin-bottom: 20px;
+}
+
+.ThemeExplorer-button {
+  color: white !important;
+  border-color: white !important;
+  background-color: transparent !important;
 }
