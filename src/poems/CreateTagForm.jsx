@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import backendApi from "../common/backendApi";
+import "./CreateTagForm.css";
 
 function CreateTagForm() {
   const navigate = useNavigate();
@@ -107,8 +108,8 @@ function CreateTagForm() {
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-lg" style={verticalLineStyle}>
-                    <h5>
-                      &quot;{poem.title}&quot; by {poem.author}
+                    <h5 className="CreateTagForm-poem-title">
+                      &quot;{poem.title}&quot; <span className="CreateTagForm-author">by {poem.author}</span>
                     </h5>
                     {selectedIndices[0] > 1 && (
                       <p className="text-center" style={{ fontWeight: "300" }}>
@@ -116,17 +117,17 @@ function CreateTagForm() {
                       </p>
                     )}
                     {selectedIndices[0] > 0 && (
-                      <p className="text-center" style={{ fontWeight: "300" }}>
+                      <p className="CreateTagForm-poem-lines text-center" style={{ fontWeight: "300" }}>
                         {poem.lines[selectedIndices[0] - 1]}
                       </p>
                     )}
                     {selectedIndices.map((index) => (
-                      <p className="text-center" key={index}>
+                      <p className="CreateTagForm-poem-lines text-center" key={index}>
                         <strong>{poem.lines[index]}</strong>
                       </p>
                     ))}
                     {selectedIndices.length - 1 < poem.lines.length && (
-                      <p className="text-center" style={{ fontWeight: "300" }}>
+                      <p className="CreateTagForm-poem-lines text-center" style={{ fontWeight: "300" }}>
                         {
                           poem.lines[
                             selectedIndices[selectedIndices.length - 1] + 1
@@ -192,6 +193,7 @@ function CreateTagForm() {
                       <hr></hr>
                       <h5>Provide your analysis:</h5>
                       <textarea
+                        required
                         type="text"
                         id="analysis"
                         value={analysis}

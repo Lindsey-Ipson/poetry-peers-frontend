@@ -7,6 +7,10 @@ small {
   margin-top: 30px;
 }
 
+.AnalyzePoems-poemLines p {
+  margin: 1px;
+}
+
 .AnalyzePoem {
   color: black;
 }

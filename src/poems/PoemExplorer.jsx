@@ -9,8 +9,8 @@ function PoemExplorer () {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [resultsAreRandom, setResultsAreRandom] = useState(false);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const location = useLocation();
   const [alertInfo, setAlertInfo] = useState({ show: false, message: '' });
 
@@ -38,16 +38,13 @@ function PoemExplorer () {
     }
   }, [query]);
 
-  // Check for state passed on navigation and set up the alert
+  // Check for state passed on navigation and set up alert if needed
   useEffect(() => {
     if (location.state?.alert) {
       setAlertInfo({ show: true, message: location.state.message });
-
-      // Hide the alert after a few seconds
       const timer = setTimeout(() => {
         setAlertInfo({ show: false, message: '' });
-      }, 5000); // 5000ms = 5 seconds
-
+      }, 5000);
       // Clean up the timer if the component unmounts
       return () => clearTimeout(timer);
     }
@@ -98,7 +95,7 @@ function PoemExplorer () {
 
       <h1>Explore Poems</h1>
       <div className="PoemExplorer-instructions">Search by title, or enjoy some random poems below</div>
-      <div className="row ">
+      <div className="row">
         <div className="row justify-content-center">
           <div className="col-auto">
             <form onSubmit={handleSearch}>
@@ -142,9 +139,9 @@ function PoemExplorer () {
         <div className="col-lg-4" key={uuidv4()}>
           <div className="card poem-card" onClick={() => handleRouteToPoem(poem)}>
             <div className="card-header">
-              <strong>{poem.title}</strong> - <em>by {poem.author}</em>
+              <strong>"{poem.title}"</strong> - <em class="PoemExplorer-author">by {poem.author}</em>
             </div>
-            <div className="card-body">
+            <div className="PoemExplorer-poem-lines card-body">
               {poem.lines.slice(0, 5).map((line, index) => (
                 <p key={index} className="card-text">
                   {line}
@@ -154,7 +151,7 @@ function PoemExplorer () {
                 ...
               </p>
               <div className="d-flex justify-content-end"> {/* Flex container to align button to the right */}
-                <a href="#" className="btn btn-primary">
+                <a className="btn btn-primary">
                   Analyze
                 </a>
               </div>

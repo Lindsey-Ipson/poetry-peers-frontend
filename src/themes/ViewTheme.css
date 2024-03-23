@@ -1,0 +1,31 @@
+.ViewTheme {
+  color: white !important;
+}
+
+.ViewTheme-tag-author {
+  color: grey;
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.ViewTheme-poem-author {
+  color: grey;
+}
+
+.ViewTheme h1 {
+  margin-top: 20px;
+}
+
+.ViewTheme .card {
+  padding: 0;
+  margin: 5px auto;
+}
+
+.ViewTheme-poem-lines p {
+  margin: 0;
+  padding: 0;
+}
+
+.ViewTheme .card-body {
+  padding: 0;
+}

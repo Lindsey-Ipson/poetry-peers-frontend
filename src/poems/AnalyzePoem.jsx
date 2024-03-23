@@ -12,9 +12,7 @@ import './AnalyzePoem.css';
 function AnalyzePoem () {
 	const navigate = useNavigate();
 	const location = useLocation();
-
 	const { poemId } = useParams();
-
 	const initialState = location.state?.data;
 
 	const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -36,9 +34,10 @@ function AnalyzePoem () {
 		themeColor
 	) => {
 		event.stopPropagation(); // Prevent event from bubbling up
-		const rect = event.target.getBoundingClientRect();
-		const posX = rect.left + window.scrollX + rect.width / 2; // Center X of the badge
-		const posY = rect.top + window.scrollY; // Top Y of the badge
+		const element = event.target;
+		const rect = element.getBoundingClientRect();
+		const posX = rect.left;
+		const posY = rect.top;
 		setToastPosition({ x: posX, y: posY });
 		const formattedDate = formatDateFromDatetime(datetime);
 		setToastContent({
@@ -50,6 +49,7 @@ function AnalyzePoem () {
 		});
 		setShowToast(true);
 	};
+
 
 	// Toast initialization and display logic
 	useEffect(() => {
@@ -116,6 +116,10 @@ function AnalyzePoem () {
 		}
 	};
 
+	const handleRouteToTheme = (themeName) => {
+    navigate(`/themes/${themeName}`);
+  };
+
 	if (!poem) {
 		return <div>Loading...</div>;
 	}
@@ -149,7 +153,7 @@ function AnalyzePoem () {
 							borderTopRightRadius: '.25rem',
 						}}
 					>
-						<strong className="me-auto" style={{ color: 'white' }}>
+						<strong className="me-auto" style={{ color: 'white' }} onClick={() => handleRouteToTheme(toastContent.themeName)}>
 							{toastContent.themeName}
 						</strong>
 						<button

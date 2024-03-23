@@ -64,17 +64,19 @@ function Contributions() {
     navigate(`/poems/${poemId}`, { state: { data: poem } });
   };
 
-  useEffect(() => {
-		console.log(tags);
-	}, [tags]);
+  const handleRouteToTheme = (themeName) => {
+    navigate(`/themes/${themeName}`);
+  };
 
   return (
     <div className="Contributions">
       <div className="Contributions-info">
         <h1>Your Contributions</h1>
-        {deleteMessage && <div className="alert alert-success">{deleteMessage}</div>}
         <h4>You've identified {uniqueThemeNames.size} {uniqueThemeNames.size === 1 ? 'theme' : 'themes'} in {uniquePoemIds.size} {uniquePoemIds.size === 1 ? 'poem' : 'poems'}</h4>
         <h5>Your total tags: {tags.length}</h5>
+        <div className="Contributions-delete-message">
+          {deleteMessage && <div className="alert alert-success">{deleteMessage}</div>}
+        </div>
       </div>
 
       {tags.map((tag) => (
@@ -82,12 +84,12 @@ function Contributions() {
           <div className="card-dialog card-xl" role="document">
             <div className="card-content">
               <div className="card-header">
-                <h5 className="card-title"><b>{tag.themeName}</b> in &quot;{tag.poem.title}&quot; by {tag.poem.author}</h5>
+                <h5 className="card-title"><b onClick={() => handleRouteToTheme(tag.themeName)}>{tag.themeName}</b> in &quot;{tag.poem.title}&quot; by {tag.poem.author}</h5>
               </div>
               <div className="card-body">
                 <div className="container-fluid">
                   <div className="row">
-                    <div className="Contributions-poem-lines col-lg" style={verticalLineStyle}
+                    <div className="Contributions-poem-lines col-md" style={verticalLineStyle}
                     onClick={() => handleRouteToPoem(tag.poemId, tag.poem)}>
                       <h5>Relevant Lines:</h5>
                       {tag.highlightedLines[0] > 1 && (
@@ -121,7 +123,7 @@ function Contributions() {
                       )}
                     </div>
 
-                    <div className="Contributions-tag-info col-lg">
+                    <div className="Contributions-tag-info col-md">
                       <h5>Your Analysis:</h5>
                       <p>{tag.analysis}</p>
                     </div>
@@ -129,9 +131,12 @@ function Contributions() {
                 </div>
               </div>
               <div className="card-footer d-flex justify-content-end">
+                {/* <button type="button" className="btn btn-primary" onClick={() => handleRouteToTheme(tag.themeName)}>
+                  View theme
+                </button>
                 <button type="button" className="btn btn-primary" onClick={() => handleRouteToPoem(tag.poemId, tag.poem)}>
                   View poem
-                </button>
+                </button> */}
                 <button type="button" className="btn btn-danger" data-dismiss="card" onClick={() => handleDeleteTag(tag.themeName, tag.poemId, tag.highlightedLines)}>
                   Delete tag
                 </button>

@@ -18,3 +18,14 @@
 .PoemExplorer h2 {
   color: white;
 }
+
+.PoemExplorer-poem-lines p {
+  margin: 2px;
+  padding: 1px;
+}
+
+.PoemExplorer-author {
+  color: grey;
+  font-style: italic;
+  margin-bottom: 0;
+}

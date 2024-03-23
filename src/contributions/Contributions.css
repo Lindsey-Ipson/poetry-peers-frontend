@@ -14,3 +14,23 @@
 .Contributions button {
   margin-left: 10px;
 }
+
+.Contributions-poem-lines p {
+  margin: 0;
+  padding: 0;
+}
+
+.Contributions .card-body {
+  padding: 12px;
+}
+
+.Contributions .card {
+  padding: 0;
+  margin: 18px auto;
+}
+
+.Contributions.alert.alert-success {
+  width: 50%;
+  text-align: center;
+  color: lime !important;
+}

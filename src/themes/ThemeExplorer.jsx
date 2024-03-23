@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import BackendApi from '../common/backendApi';
 import './ThemeExplorer.css';
 
@@ -9,21 +9,15 @@ function ThemeExplorer () {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [alertInfo, setAlertInfo] = useState({ show: false, message: '' });
  
   const fetchThemesWithPoems = async () => {
     let themesData = await BackendApi.getThemes();
     for (let themeData of themesData) {
       let tagsForTheme = await BackendApi.getTagsByThemeName(themeData.name);
-
-
-
       themeData.tags = tagsForTheme;
-
-
-
-
-
       // Initialize poems as an empty array to accumulate poems
       themeData.poems = [];
   
@@ -41,14 +35,21 @@ function ThemeExplorer () {
     setThemes(themesData);
   };
 
+  // Check for state passed on navigation and set up alert if needed
+  useEffect(() => {
+    if (location.state?.alert) {
+      setAlertInfo({ show: true, message: location.state.message });
+      const timer = setTimeout(() => {
+        setAlertInfo({ show: false, message: '' });
+      }, 5000); 
+      // Clean up the timer if the component unmounts
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
+
   useEffect(() => {
     console.log(themes);
   }), [themes];
-
-
-
-
-
 
 	useEffect(() => {
 		fetchThemesWithPoems();
@@ -94,12 +95,22 @@ function ThemeExplorer () {
     }
   };
 
-  const handlePoemClick = (poem) => {
+  const handlePoemClick = (event, poem) => {
+    event.stopPropagation(); // Prevent event from bubbling up
     navigate(`/poems/${poem.id}`, { state: { data: poem } });
+  };
+
+  const handleRouteToTheme = (themeName) => {
+    navigate(`/themes/${themeName}`);
   };
 
   return (
     <div className="ThemeExplorer container ">
+
+      <div>
+        {alertInfo.show && <div className="alert alert-danger">{alertInfo.message}</div>}
+      </div>
+
       <h1 className="text-center mb-4">Themes</h1>
 
       <form onSubmit={handleSearch}>
@@ -134,17 +145,17 @@ function ThemeExplorer () {
         </form>
 
       <ul className="list-group ">
+
         {themes.map((theme) => (
-          <li key={uuidv4()} className="list-group-item">
+          <li key={uuidv4()} className="list-group-item" onClick={() => handleRouteToTheme(theme.name)}>
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <h5 className="ThemeExplorer-theme-name fw-bold mb-1">{theme.name}</h5>
 
                 {theme.poems.map((poem) => (
-                  <p key={poem.id} className="poem-item mb-1" onClick={() => handlePoemClick(poem)}>
+                  <p key={poem.id} className="poem-item mb-1" onClick={(event) => handlePoemClick(event, poem)}>
                     <i className="ThemeExplorer-poem-title">{poem.title}</i> <span className="text-muted">by {poem.author}</span>
                   </p>
-                 
                 ))}
 
               </div>
@@ -154,11 +165,12 @@ function ThemeExplorer () {
             </div>
           </li>
         ))}
+
       </ul>
     </div>
   );
-
-	
 }
 
 export default ThemeExplorer;
+
+

@@ -1,0 +1,11 @@
+.CreateTagForm-poem-title {
+  margin-bottom: 15px;
+}
+
+p.CreateTagForm-poem-lines {
+  margin: 6px;
+}
+
+.CreateTagForm-author {
+  color: rgb(111, 106, 106);
+}
