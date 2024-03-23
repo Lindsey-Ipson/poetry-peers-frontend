@@ -16,7 +16,7 @@ function CreateTagForm() {
 
   const handleClose = () => {
 		setShow(false);
-		navigate(`/poems/${poem.id}`, { state: { data: poem } });
+		navigate(`/poems/${poem.id}`, { state: { data: { poem } } });
 	}
 
   const handleShow = () => setShow(true);
@@ -69,7 +69,7 @@ function CreateTagForm() {
     }
 
     // Redirect to poem page
-    navigate(`/poems/${poem.id}`, { state: { data: poem } });
+    navigate(`/poems/${poem.id}`, { state: { data: { poem }} });
   };
 
   const handleThemeChange = (event) => {

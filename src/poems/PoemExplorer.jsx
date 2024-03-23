@@ -83,7 +83,7 @@ function PoemExplorer () {
   const handleRouteToPoem = (poem) => {
     let hashedId = hashPoem(poem);
     poem.id = hashedId;
-    navigate(`/poems/${hashedId}`, { state: { data: poem } });
+    navigate(`/poems/${hashedId}`, { state: { data: { poem } } });
   };
 
   return (
@@ -139,7 +139,7 @@ function PoemExplorer () {
         <div className="col-lg-4" key={uuidv4()}>
           <div className="card poem-card" onClick={() => handleRouteToPoem(poem)}>
             <div className="card-header">
-              <strong>"{poem.title}"</strong> - <em class="PoemExplorer-author">by {poem.author}</em>
+              <strong>"{poem.title}"</strong> - <em className="PoemExplorer-author">by {poem.author}</em>
             </div>
             <div className="PoemExplorer-poem-lines card-body">
               {poem.lines.slice(0, 5).map((line, index) => (

@@ -22,22 +22,21 @@ export async function getOrAddPoemToDb(poem) {
 			let poemTags = await BackendApi.getTagsByPoemId(poem.id);
 			poemInDb.tags = poemTags;
 
-			if (poemTags.length) {
-				for (let tag of poemTags) {
-					let tagComments = await BackendApi.getCommentsByTag(
-						tag.themeName,
-						tag.poemId,
-						tag.highlightedLines
-					);
-					// console.log(tagComments, 'tagComments')
-					tag.comments = tagComments;
-				}
-			}
+			// if (poemTags.length) {
+			// 	for (let tag of poemTags) {
+			// 		let tagComments = await BackendApi.getCommentsByTag(
+			// 			tag.themeName,
+			// 			tag.poemId,
+			// 			tag.highlightedLines
+			// 		);
+			// 		tag.comments = tagComments;
+			// 	}
+			// }
 			// Set poem to retrieved poem from database
 			poem = poemInDb;
 		}
 	} catch (error) {
-		console.log(error, 'errorhere');
+		console.log(error);
 		if (
 			error.indexOf('No such poem with id') !== -1 ||
 			error.some((element) => {

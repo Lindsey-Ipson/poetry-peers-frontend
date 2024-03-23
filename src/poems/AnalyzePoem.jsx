@@ -1,3 +1,4 @@
+
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getOrAddPoemToDb } from './poemUtils';
@@ -16,7 +17,8 @@ function AnalyzePoem () {
 	const initialState = location.state?.data;
 
 	const { currentUser, setCurrentUser } = useContext(UserContext);
-	const [poem, setPoem] = useState(initialState);
+	// const [poem, setPoem] = useState(initialState.poem);
+	const [poem, setPoem] = useState(location.state?.data.poem);
 	const [tags, setTags] = useState([]);
 
 	const [showToast, setShowToast] = useState(false);
@@ -64,17 +66,20 @@ function AnalyzePoem () {
 		const fetchPoemAndTags = async () => {
 			try {
 				let fetchedPoem;
+				// console.log(poemId)
+				console.log(initialState, 'INITIAL STATE')
 
 				// Check if initialState is available; if not, fetch the poem by ID
 				if (poemId && !initialState) {
 					try {
+						console.log(poemId, 'poemId2')
 						fetchedPoem = await BackendApi.getPoemById(poemId);
 					} catch (error) {
 						console.error('Failed to fetch poem:', error);
 						navigate('/poems', { state: { alert: true, message: 'Poem does not exist. Please try again.' } });
 					}
 				} else {
-					fetchedPoem = await getOrAddPoemToDb(initialState);
+					fetchedPoem = await getOrAddPoemToDb(initialState.poem);
 				}
 	
 				const poemTags = await BackendApi.getTagsByPoemId(fetchedPoem.id);
@@ -87,7 +92,7 @@ function AnalyzePoem () {
 				setTags(poemTags);
 			} catch (error) {
 				console.error('Failed to add poem to database and/or retrieve tags:', error);
-				navigate('/poems', { state: { alert: true, message: 'Poem currently unavailable. Please try again.' } });
+				// navigate('/poems', { state: { alert: true, message: 'Poem currently unavailable. Please try again.' } });
 			}
 		};
 	
@@ -234,6 +239,7 @@ function AnalyzePoem () {
 }
 
 export default AnalyzePoem;
+
 
 
 

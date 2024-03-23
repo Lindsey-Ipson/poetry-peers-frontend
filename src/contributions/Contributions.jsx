@@ -61,7 +61,7 @@ function Contributions() {
   };
 
   const handleRouteToPoem = (poemId, poem) => {
-    navigate(`/poems/${poemId}`, { state: { data: poem } });
+    navigate(`/poems/${poemId}`, { state: { data: { poem } } });
   };
 
   const handleRouteToTheme = (themeName) => {

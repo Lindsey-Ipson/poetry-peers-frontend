@@ -104,7 +104,8 @@ function ThemeExplorer () {
 		// let hashedId = hashPoem(poem);
 		// poem.id = hashedId;
 		console.log(themeName, 'TN');
-		navigate(`/poems/${poem.id}`, { state: { data: { poem, themeName } } });
+    // TODO
+		navigate(`/poems/${poem.id}`, { state: { data: { poem }, themeName } });
 	};
 
 

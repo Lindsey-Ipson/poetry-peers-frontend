@@ -43,10 +43,10 @@ function ViewTheme () {
 	fetchPoemsAndTagsByTheme(themeName);
 		}, [themeName]);
 
-	const handleRouteToPoem = (poem) => {
-		let hashedId = hashPoem(poem);
-		poem.id = hashedId;
-		navigate(`/poems/${hashedId}`, { state: { data: poem } });
+	const handleRouteToPoem = (poemId, poem) => {
+		// navigate(`/poems/${poemId}`, { state: { data: { { poem }, { themeName } } } });
+		navigate(`/poems/${poemId}`, { state: { data: { poem, themeName } } });
+
 	};
 
 	const verticalLineStyle = {
@@ -60,7 +60,7 @@ function ViewTheme () {
 			<h4 className="text-center">Explore poems that deal with the theme of {themeName}:</h4>
 	
 			{themePoems.map((poem) => (
-				<div key={poem.id} onClick={() => handleRouteToPoem(poem)}>
+				<div key={poem.id} onClick={() => handleRouteToPoem(poem.id, poem)}>
 					<div className="Contributions-contribution card fade show d-block" tabIndex="-1" role="dialog" key={uuidv4()}>
 						<div className="card-dialog card-xl" role="document">
 							<div className="card-content">

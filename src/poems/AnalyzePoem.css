@@ -32,6 +32,10 @@ small {
   margin-top: 7px;
 }
 
+#liveToast {
+  border-style: none;
+}
+
 @media (max-width: 1100px) {
   .AnalyzePoem-poem {
     margin-left: 100px;
