@@ -162,7 +162,7 @@ function ThemeExplorer () {
 
                 {theme.poems.map((poem) => (
                   <p key={poem.id} className="poem-item mb-1" onClick={(event) => handleRouteToPoem(event, theme.name, poem)}>
-                    <i className="ThemeExplorer-poem-title">{poem.title}</i> <span className="text-muted">by {poem.author}</span>
+                    <span className="ThemeExplorer-poem-title">"{poem.title}"</span> <span className="text-muted">by {poem.author}</span>
                   </p>
                 ))}
 
