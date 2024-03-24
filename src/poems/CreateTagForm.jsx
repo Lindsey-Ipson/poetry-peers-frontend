@@ -202,27 +202,26 @@ function CreateTagForm() {
                         rows="10"
                         placeholder="Please explain how this theme pertains to these lines, and how it contributes to the overall meaning of the poem."
                       />
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal"
+                          onClick={handleClose}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          Submit
+                        </button>
+                      </div>
                     </form>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-                onClick={handleClose}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleSubmit}
-              >
-                Submit
-              </button>
             </div>
           </div>
         </div>

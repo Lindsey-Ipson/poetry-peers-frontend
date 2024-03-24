@@ -2,7 +2,7 @@ import md5 from 'crypto-js/md5';
 import BackendApi from '../common/backendApi.js';
 
 export function hashPoem(poem) {
-	var string = poem.title + poem.author;
+	let string = poem.title + poem.author;
 	// Use crypto-js to generate a MD5 hash from the input
 	const hash = md5(string).toString();
 
