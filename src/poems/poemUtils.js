@@ -22,17 +22,6 @@ export async function getOrAddPoemToDb(poem) {
 			let poemTags = await BackendApi.getTagsByPoemId(poem.id);
 			poemInDb.tags = poemTags;
 
-			// if (poemTags.length) {
-			// 	for (let tag of poemTags) {
-			// 		let tagComments = await BackendApi.getCommentsByTag(
-			// 			tag.themeName,
-			// 			tag.poemId,
-			// 			tag.highlightedLines
-			// 		);
-			// 		tag.comments = tagComments;
-			// 	}
-			// }
-			// Set poem to retrieved poem from database
 			poem = poemInDb;
 		}
 	} catch (error) {
@@ -53,6 +42,19 @@ export async function getOrAddPoemToDb(poem) {
 		}
 	}
 	return poem;
+}
+
+export function capitalizeWords (phrase) {
+  // Split the phrase into words
+  const words = phrase.toLowerCase().split(' ');
+
+  // Capitalize the first letter of each word
+  const capitalizedWords = words.map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+
+  // Join the words back into a phrase
+  return capitalizedWords.join(' ');
 }
 
 export const lightColors = [
@@ -159,11 +161,3 @@ export const lightColors = [
 	'YellowGreen',
 	'DarkSalmon',
 ];
-
-export const darkenColor = (color, amount = 0.7) => {
-  let [r, g, b] = color.match(/\d+/g).map(Number);
-  r = Math.floor(r * amount);
-  g = Math.floor(g * amount);
-  b = Math.floor(b * amount);
-  return `rgb(${r}, ${g}, ${b})`;
-};

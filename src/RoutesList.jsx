@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Homepage from './homepage/Homepage';
-import LoginForm from './forms/LoginForm';
-import SignupForm from './forms/SignupForm';
-import EditProfileForm from './forms/EditProfileForm';
+import LoginForm from './userForms/LoginForm';
+import SignupForm from './userForms/SignupForm';
+import EditProfileForm from './userForms/EditProfileForm';
 import UserContext from './common/UserContext';
 import PoemExplorer from './poems/PoemExplorer';
 import AnalyzePoem from './poems/AnalyzePoem';

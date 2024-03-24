@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import backendApi from "../common/backendApi";
+import { capitalizeWords } from "./poemUtils";
 import "./CreateTagForm.css";
 
 function CreateTagForm() {
@@ -45,6 +46,8 @@ function CreateTagForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     let finalTheme = selectedTheme || customTheme; // Use selected theme or custom theme
+
+    finalTheme = capitalizeWords(finalTheme);
 
     if (themes && !themes.includes(finalTheme)) {
       try {
