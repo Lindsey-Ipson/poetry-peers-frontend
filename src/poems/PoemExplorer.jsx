@@ -147,19 +147,21 @@ function PoemExplorer () {
                   {line}
                 </p>
               ))}
-              <p className="card-text">
-                ...
-              </p>
-              <div className="d-flex justify-content-end"> {/* Flex container to align button to the right */}
-                <a className="btn btn-primary">
-                  Analyze
-                </a>
+              <p className="card-text">...</p>
+              <div className="d-flex justify-content-between">
+                <span className="PoemExplorer-line-count">{poem.linecount} {poem.linecount === 1 ? 'line' : 'lines'} total</span>
+                <div>
+                  <a className="btn btn-primary">
+                    Analyze
+                  </a>
+                </div>
               </div>
             </div>
           </div>
           <br />
         </div>
-      ))}
+))}
+
 
       </div>
     </div>
