@@ -4,7 +4,7 @@ import BackendApi from '../common/backendApi';
 import UserContext from '../common/UserContext';
 import useFields from '../hooks/useFields';
 
-function EditProfileForm() {
+function EditProfileForm () {
 	const { currentUser, setCurrentUser } = useContext(UserContext);
 
 	const initialState = {

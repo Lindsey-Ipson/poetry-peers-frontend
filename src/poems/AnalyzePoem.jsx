@@ -1,5 +1,5 @@
 
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { getOrAddPoemToDb } from './poemUtils';
 import UserContext from '../common/UserContext';
@@ -15,8 +15,8 @@ function AnalyzePoem () {
 	const location = useLocation();
 	const { poemId } = useParams();
 	const initialState = location.state?.data;
+	const { currentUser } = useContext(UserContext);
 
-	const { currentUser, setCurrentUser } = useContext(UserContext);
 	const [poem, setPoem] = useState(location.state?.data.poem);
 	const themeName = location.state?.data.themeName;
 	const [tags, setTags] = useState([]);
@@ -28,7 +28,7 @@ function AnalyzePoem () {
 
 	let selectedIndices;
 
-	const handleBadgeClick = (event, themeName, username, datetime, analysis, themeColor) => {
+	function handleBadgeClick (event, themeName, username, datetime, analysis, themeColor) {
 		event.stopPropagation(); // Prevent event from bubbling up
 		const element = event.target;
 		const rect = element.getBoundingClientRect();
@@ -40,19 +40,21 @@ function AnalyzePoem () {
 		setShowToast(true);
 	};
 
-	// Toast initialization and display logic
 	useEffect(() => {
-		let toastEl = document.getElementById('liveToast');
-		if (showToast && toastEl) {
-			const toast = new Toast(toastEl);
-			toast.show();
+		function initializeAndDisplayToast() {
+			const toastEl = document.getElementById('liveToast');
+			if (showToast && toastEl) {
+				const toast = new Toast(toastEl);
+				toast.show();
+			}
 		}
+		initializeAndDisplayToast();
 	}, [showToast, toastPosition, toastContent]);
 
   useEffect(() => {
-    const fetchPoemAndTags = async () => {
+    async function fetchPoemAndTags () {
       let fetchedPoem;
-      let poemTags = []; // Declare poemTags here so it's accessible throughout the function
+      let poemTags = [];
 
       try {
         // Check if initialState is available; if not, fetch the poem by ID
@@ -61,9 +63,9 @@ function AnalyzePoem () {
         } else {
           fetchedPoem = await getOrAddPoemToDb(initialState.poem);
         }
-
-        poemTags = await BackendApi.getTagsByPoemId(fetchedPoem.id); // Fetch and set poemTags
         setPoem(fetchedPoem);
+
+        poemTags = await BackendApi.getTagsByPoemId(fetchedPoem.id);
 
         poemTags.forEach((tag, i) => {
           tag.color = lightColors[i % lightColors.length];
@@ -72,20 +74,19 @@ function AnalyzePoem () {
         setTags(poemTags);
       } catch (error) {
         console.error('Failed to add poem to database and/or retrieve tags:', error);
+				return navigate('/poems', { state: { alert: true, message: 'The requested poem does not exist.' } });
       }
 
-      // Now that poemTags is defined, check for themeName
+      // Check if themeName was passed to state, so that first tag with matching themeName can be displayed
       if (themeName) {
         const matchingTag = poemTags.find(tag => tag.themeName === themeName);
         if (matchingTag) {
-
-          // Prepare the toast content for the first matching tag
           setToastContent({
             themeName: matchingTag.themeName,
             username: matchingTag.username,
             formattedDate: formatDateFromDatetime(matchingTag.datetime),
             analysis: matchingTag.analysis,
-            themeColor: matchingTag.color, // Assuming color is assigned in the forEach loop above
+            themeColor: matchingTag.color,
           });
           setMatchingTag(matchingTag);
       }
@@ -95,7 +96,7 @@ function AnalyzePoem () {
   }, []);
 
   useEffect(() => {
-    const renderToastIfMatchingTag = () => {
+    function renderToastIfMatchingTag () {
       if (matchingTag) {
         // Wait for the DOM to stabilize before attempting to find and click the badge
         setTimeout(() => {
@@ -115,8 +116,7 @@ function AnalyzePoem () {
     renderToastIfMatchingTag();
   }, [matchingTag, themeName, tags]);
 
-
-	const handleTextSelection = (event) => {
+	function handleTextSelection (event) {
 		const selection = window.getSelection();
 
 		// Check if there's actual text selected and not just click
@@ -132,14 +132,14 @@ function AnalyzePoem () {
 				const key = selectedElement.getAttribute('data-key');
 				selectedIndices = [parseInt(key)];
 			}
-			navigate('/poems/CreateTagForm', {
+			return navigate('/poems/CreateTagForm', {
 				state: { data: { selectedIndices, poem, currentUser } },
 			});
 		}
 	};
 
-	const handleRouteToTheme = (themeName) => {
-    navigate(`/themes/${themeName}`);
+	function handleRouteToTheme (themeName) {
+    return navigate(`/themes/${themeName}`);
   };
 
 	if (!poem) {
@@ -206,51 +206,51 @@ function AnalyzePoem () {
 
 			<div className="AnalyzePoem-poem">
 
-			<h1>{poem.title}</h1>
-			<h2>by {poem.author}</h2>
+				<h1>{poem.title}</h1>
+				<h2>by {poem.author}</h2>
 
-			<div className="AnalyzePoems-poemLines" onMouseUp={handleTextSelection}>
-			  {poem.lines.map((line, index) => {
-			    // Check if line is an empty string to determine how to render
-			    if (line.trim() === '') {
-			      // Render a simple paragraph for empty lines to maintain visual spacing
-			      return <p key={index} data-key={index}>&nbsp;</p>;
-			    } else {
-			      // For non-empty lines, filter tags that highlight this line
-			      const highlightedTags = tags.filter((tag) => tag.highlightedLines.includes(index));
-			      return (
-			        <p key={index} data-key={index}>
-			          {line}{' '}
-			          {highlightedTags.map((tag, tagIndex) => (
-			            // Only render badges for non-empty lines
-			            <span
-										data-theme-name={tag.themeName}
-			              key={tagIndex}
-			              className="badge"
-			              style={{
-			                backgroundColor: tag.color,
-			                color: 'white',
-			                cursor: 'pointer',
-			              }}
-			              onClick={(e) =>
-			                handleBadgeClick(
-			                  e,
-			                  tag.themeName,
-			                  tag.username,
-			                  tag.datetime,
-			                  tag.analysis,
-			                  tag.color
-			                )
-			              }
-			            >
-			              {tag.themeName}
-			            </span>
-			          ))}
-			        </p>
-			      );
-			    }
-			  })}
-			</div>
+				<div className="AnalyzePoems-poemLines" onMouseUp={handleTextSelection}>
+				  {poem.lines.map((line, index) => {
+				    // Check if line is an empty string to determine how to render
+				    if (line.trim() === '') {
+				      // Render a simple paragraph for empty lines to maintain visual spacing
+				      return <p key={index} data-key={index}>&nbsp;</p>;
+				    } else {
+				      // For non-empty lines, filter tags that highlight this line
+				      const highlightedTags = tags.filter((tag) => tag.highlightedLines.includes(index));
+				      return (
+				        <p key={index} data-key={index}>
+				          {line}{' '}
+				          {highlightedTags.map((tag, tagIndex) => (
+				            // Only render badges for non-empty lines
+				            <span
+											data-theme-name={tag.themeName}
+				              key={tagIndex}
+				              className="badge"
+				              style={{
+				                backgroundColor: tag.color,
+				                color: 'white',
+				                cursor: 'pointer',
+				              }}
+				              onClick={(e) =>
+				                handleBadgeClick(
+				                  e,
+				                  tag.themeName,
+				                  tag.username,
+				                  tag.datetime,
+				                  tag.analysis,
+				                  tag.color
+				                )
+				              }
+				            >
+				              {tag.themeName}
+				            </span>
+				          ))}
+				        </p>
+				      );
+				    }
+				  })}
+				</div>
 			</div>
 		</div>
 	);

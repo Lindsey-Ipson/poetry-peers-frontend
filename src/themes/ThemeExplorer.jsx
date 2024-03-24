@@ -13,14 +13,13 @@ function ThemeExplorer () {
   const location = useLocation();
   const [alertInfo, setAlertInfo] = useState({ show: false, message: '' });
  
-  const fetchThemesWithPoems = async () => {
+  async function fetchThemesWithPoems () {
     let themesData = await BackendApi.getThemes();
     for (let themeData of themesData) {
       let tagsForTheme = await BackendApi.getTagsByThemeName(themeData.name);
       themeData.tags = tagsForTheme;
-      // Initialize poems as an empty array to accumulate poems
+
       themeData.poems = [];
-  
       for (let tag of tagsForTheme) {
         let poemForTag = await BackendApi.getPoemById(tag.poemId);
         // Check if the poem is already in the themeData.poems array
@@ -31,25 +30,23 @@ function ThemeExplorer () {
         }
       }
     }
-
     setThemes(themesData);
   };
 
   // Check for state passed on navigation and set up alert if needed
   useEffect(() => {
-    if (location.state?.alert) {
-      setAlertInfo({ show: true, message: location.state.message });
-      const timer = setTimeout(() => {
-        setAlertInfo({ show: false, message: '' });
-      }, 5000); 
-      // Clean up the timer if the component unmounts
-      return () => clearTimeout(timer);
+    function setupAlertFromLocation() {
+      if (location.state?.alert) {
+        setAlertInfo({ show: true, message: location.state.message });
+        const timer = setTimeout(() => {
+          setAlertInfo({ show: false, message: '' });
+        }, 5000);
+        // Clean up the timer if the component unmounts
+        return () => clearTimeout(timer);
+      }
     }
+    setupAlertFromLocation();
   }, [location]);
-
-  useEffect(() => {
-    console.log(themes);
-  }), [themes];
 
 	useEffect(() => {
 		fetchThemesWithPoems();
@@ -62,12 +59,12 @@ function ThemeExplorer () {
     }
   }, [query]);
 
-  const handleInputChange = (e) => {
-    setQuery(e.target.value);
+  function handleInputChange (event) {
+    setQuery(event.target.value);
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  async function handleSearch (event) {
+    event.preventDefault();
     setLoading(true);
     
     try {
@@ -95,21 +92,13 @@ function ThemeExplorer () {
     }
   };
 
-  // const handlePoemClick = (event, poem) => {
-  //   event.stopPropagation(); // Prevent event from bubbling up
-  //   navigate(`/poems/${poem.id}`, { state: { data: poem } });
-  // };
-  const handleRouteToPoem = (event, themeName, poem) => {
+  function handleRouteToPoem (event, themeName, poem) {
     event.stopPropagation(); // Prevent event from bubbling up
-		// let hashedId = hashPoem(poem);
-		// poem.id = hashedId;
-		console.log(themeName, 'TN');
-		navigate(`/poems/${poem.id}`, { state: { data: { poem, themeName } } });
+		return navigate(`/poems/${poem.id}`, { state: { data: { poem, themeName } } });
 	};
 
-
-  const handleRouteToTheme = (themeName) => {
-    navigate(`/themes/${themeName}`);
+  function handleRouteToTheme (themeName) {
+    return navigate(`/themes/${themeName}`);
   };
 
   return (
@@ -180,5 +169,3 @@ function ThemeExplorer () {
 }
 
 export default ThemeExplorer;
-
-

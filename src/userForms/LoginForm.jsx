@@ -18,7 +18,7 @@ function LoginForm({ login }) {
 
     const loginRes = await login(formData);
     if (loginRes.loggedIn) {
-      navigate('/companies');
+      return navigate('/companies');
     } else {
       setErrors(loginRes.errs);
     }

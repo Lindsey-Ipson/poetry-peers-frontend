@@ -7,14 +7,18 @@ import './NavBar.css';
 function NavBar({ logout }) {
 	const { currentUser } = useContext(UserContext);
 
-	const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 	const [navbarCollapse, setNavbarCollapse] = useState(null);
 
 	useEffect(() => {
-		const elem = document.getElementById('navbarToggle');
-		const bsCollapse = new Collapse(elem, { toggle: false });
-		setNavbarCollapse(bsCollapse);
+		function initializeNavbarCollapse() {
+			const elem = document.getElementById('navbarToggle');
+			const bsCollapse = new Collapse(elem, { toggle: false });
+			setNavbarCollapse(bsCollapse);
+		}
+
+		initializeNavbarCollapse();
 	}, []);
+	
 
 	const handleNavbarToggler = () => {
 		navbarCollapse.toggle();

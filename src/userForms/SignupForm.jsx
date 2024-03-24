@@ -22,7 +22,7 @@ function SignupForm({ signup }) {
 
 		const signupRes = await signup(formData);
 		if (signupRes.signedUp) {
-			navigate('/homepage');
+			return navigate('/homepage');
 		} else {
 			setErrors(signupRes.errs);
 		}

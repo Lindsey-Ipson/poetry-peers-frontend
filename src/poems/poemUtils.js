@@ -25,7 +25,7 @@ export async function getOrAddPoemToDb(poem) {
 			poem = poemInDb;
 		}
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		if (
 			error.indexOf('No such poem with id') !== -1 ||
 			error.some((element) => {

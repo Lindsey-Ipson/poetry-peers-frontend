@@ -8,7 +8,7 @@ const useLocalStorageState = (key, defaultValue) => {
         window.localStorage.getItem(key) || JSON.stringify(defaultValue)
       )
     } catch (err) {
-      console.log(err)
+      console.error(err)
       value = defaultValue;
     }
     return value;

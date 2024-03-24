@@ -15,17 +15,15 @@ function CreateTagForm() {
   const [analysis, setAnalysis] = useState("");
   const [show, setShow] = useState(true);
 
-  const handleClose = () => {
+  function handleClose () {
 		setShow(false);
-		navigate(`/poems/${poem.id}`, { state: { data: { poem } } });
+		return navigate(`/poems/${poem.id}`, { state: { data: { poem } } });
 	}
-
-  const handleShow = () => setShow(true);
 
   const { selectedIndices, poem, currentUser } = initialState || {};
 
   useEffect(() => {
-    const fetchThemes = async () => {
+    async function fetchThemes () {
       try {
         const themesData = await backendApi.getThemes();
 
@@ -43,11 +41,12 @@ function CreateTagForm() {
     fetchThemes();
   }, [initialState]);
 
-  const handleSubmit = async (event) => {
+  async function handleSubmit (event) {
     event.preventDefault();
-    let finalTheme = selectedTheme || customTheme; // Use selected theme or custom theme
+    let finalTheme = selectedTheme || customTheme;
 
-    finalTheme = capitalizeWords(finalTheme);
+    // In case user inputs lowercased new theme which matches uppercased existing theme
+    finalTheme = capitalizeWords(finalTheme); 
 
     if (themes && !themes.includes(finalTheme)) {
       try {
@@ -71,22 +70,19 @@ function CreateTagForm() {
       console.error("Failed to add tag:", error);
     }
 
-    // Redirect to poem page
-    navigate(`/poems/${poem.id}`, { state: { data: { poem }} });
+    return navigate(`/poems/${poem.id}`, { state: { data: { poem }} });
   };
 
-  const handleThemeChange = (event) => {
-    console.log(event.target.value);
-    console.log(themes);
+  function handleThemeChange (event) {
     setSelectedTheme(event.target.value);
   };
 
-  const handleCustomThemeChange = (event) => {
+  function handleCustomThemeChange (event) {
 		setSelectedTheme("");
     setCustomTheme(event.target.value);
   };
 
-  const handleAnalysisChange = (event) => {
+  function handleAnalysisChange (event) {
     setAnalysis(event.target.value);
   };
 

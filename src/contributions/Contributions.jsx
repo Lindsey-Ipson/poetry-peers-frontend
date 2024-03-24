@@ -6,7 +6,6 @@ import UserContext from '../common/UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Contributions.css';
 
-
 function Contributions() {
   const [tags, setTags] = useState([]);
   const [uniquePoemIds, setUniquePoemIds] = useState(new Set());
@@ -17,7 +16,7 @@ function Contributions() {
   const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
-    const fetchTagsAndPoems = async () => {
+    async function fetchTagsAndPoems () {
       let tagsData = await BackendApi.getTagsByUsername(currentUser.username);
       const localUniquePoemIds = new Set();
       const localUniqueThemeNames = new Set();
@@ -37,7 +36,7 @@ function Contributions() {
     fetchTagsAndPoems();
   }, []); 
 
-  const handleDeleteTag = async (themeName, poemId, highlightedLines) => {
+  async function handleDeleteTag (themeName, poemId, highlightedLines) {
     await BackendApi.deleteTag(themeName, poemId, highlightedLines);
     let newTags = tags.filter(tag => !(tag.themeName === themeName && tag.poemId === poemId && JSON.stringify(tag.highlightedLines) === JSON.stringify(highlightedLines)));
     
@@ -55,12 +54,12 @@ function Contributions() {
     setTimeout(() => setDeleteMessage(''), 3500); 
   };
 
-  const handleRouteToPoem = (poemId, poem, themeName) => {
-    navigate(`/poems/${poemId}`, { state: { data: { poem, themeName } } });
+  function handleRouteToPoem (poemId, poem, themeName) {
+    return navigate(`/poems/${poemId}`, { state: { data: { poem, themeName } } });
   };
 
-  const handleRouteToTheme = (themeName) => {
-    navigate(`/themes/${themeName}`);
+  function handleRouteToTheme (themeName) {
+    return navigate(`/themes/${themeName}`);
   };
 
   return (
@@ -126,12 +125,6 @@ function Contributions() {
                 </div>
               </div>
               <div className="card-footer d-flex justify-content-end">
-                {/* <button type="button" className="btn btn-primary" onClick={() => handleRouteToTheme(tag.themeName)}>
-                  View theme
-                </button>
-                <button type="button" className="btn btn-primary" onClick={() => handleRouteToPoem(tag.poemId, tag.poem)}>
-                  View poem
-                </button> */}
                 <button type="button" className="btn btn-danger" data-dismiss="card" onClick={() => handleDeleteTag(tag.themeName, tag.poemId, tag.highlightedLines)}>
                   Delete tag
                 </button>
