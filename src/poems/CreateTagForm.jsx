@@ -87,10 +87,6 @@ function CreateTagForm() {
     setAnalysis(event.target.value);
   };
 
-  const verticalLineStyle = {
-    borderRight: "1px solid rgb(230, 230, 230)",
-  };
-
   return (
     <div className="CreateTagForm">
       <div
@@ -107,7 +103,7 @@ function CreateTagForm() {
             <div className="modal-body">
               <div className="container-fluid">
                 <div className="row">
-                  <div className="col-lg" style={verticalLineStyle}>
+                  <div className="col-lg verticalLineStyle">
                     <h5 className="CreateTagForm-poem-title">
                       &quot;{poem.title}&quot; <span className="CreateTagForm-author">by {poem.author}</span>
                     </h5>

@@ -21,7 +21,7 @@
 }
 
 .Contributions .card-body {
-  padding: 12px;
+  padding: 10px;
 }
 
 .Contributions .card {
@@ -34,3 +34,7 @@
   text-align: center;
   color: lime !important;
 }
+
+.verticalLineStyle {
+  border-right: "1px solid rgb(230, 230, 230)",
+};

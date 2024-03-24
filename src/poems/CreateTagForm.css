@@ -9,3 +9,7 @@ p.CreateTagForm-poem-lines {
 .CreateTagForm-author {
   color: rgb(111, 106, 106);
 }
+
+.verticalLineStyle {
+  border-right: "1px solid rgb(230, 230, 230)",
+};

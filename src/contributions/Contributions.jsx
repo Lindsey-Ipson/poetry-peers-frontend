@@ -37,11 +37,6 @@ function Contributions() {
     fetchTagsAndPoems();
   }, []); 
 
-
-  const verticalLineStyle = {
-    borderRight: "1px solid rgb(230, 230, 230)",
-  };
-
   const handleDeleteTag = async (themeName, poemId, highlightedLines) => {
     await BackendApi.deleteTag(themeName, poemId, highlightedLines);
     let newTags = tags.filter(tag => !(tag.themeName === themeName && tag.poemId === poemId && JSON.stringify(tag.highlightedLines) === JSON.stringify(highlightedLines)));
@@ -89,7 +84,7 @@ function Contributions() {
               <div className="card-body">
                 <div className="container-fluid">
                   <div className="row">
-                    <div className="Contributions-poem-lines col-md" style={verticalLineStyle}
+                    <div className="Contributions-poem-lines col-md verticalLineStyle"
                     onClick={() => handleRouteToPoem(tag.poemId, tag.poem, tag.themeName)}>
                       <h5>Relevant Lines:</h5>
                       {tag.highlightedLines[0] > 1 && (

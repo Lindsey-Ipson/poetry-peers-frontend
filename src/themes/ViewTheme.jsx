@@ -44,15 +44,8 @@ function ViewTheme () {
 		}, [themeName]);
 
 	const handleRouteToPoem = (poemId, poem) => {
-		// navigate(`/poems/${poemId}`, { state: { data: { { poem }, { themeName } } } });
 		navigate(`/poems/${poemId}`, { state: { data: { poem, themeName } } });
-
 	};
-
-	const verticalLineStyle = {
-		borderRight: "1px solid rgb(230, 230, 230)",
-	};
-	
 
 	return (
 		<div className="ViewTheme" id="test">
@@ -61,7 +54,7 @@ function ViewTheme () {
 	
 			{themePoems.map((poem) => (
 				<div key={poem.id} onClick={() => handleRouteToPoem(poem.id, poem)}>
-					<div className="Contributions-contribution card fade show d-block" tabIndex="-1" role="dialog" key={uuidv4()}>
+					<div className="ViewTheme-theme card fade show d-block" tabIndex="-1" role="dialog" key={uuidv4()}>
 						<div className="card-dialog card-xl" role="document">
 							<div className="card-content">
 								<div className="card-header">
@@ -89,7 +82,7 @@ function ViewTheme () {
 														Submitted by <b>{tag.username}</b> on <b>{tag.formattedDate}</b>
 													</p>
 												</div>
-												{index !== poem.relevantTags.length - 1 && <div className="col-12"><hr /></div>}
+												{index !== poem.relevantTags.length - 1 && <div className="col-12"><hr className="ViewTheme-custom-hr" /></div>}
 											</div>
 										))}
 									</div>
