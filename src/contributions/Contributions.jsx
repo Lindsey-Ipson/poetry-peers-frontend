@@ -60,8 +60,8 @@ function Contributions() {
     setTimeout(() => setDeleteMessage(''), 3500); 
   };
 
-  const handleRouteToPoem = (poemId, poem) => {
-    navigate(`/poems/${poemId}`, { state: { data: { poem } } });
+  const handleRouteToPoem = (poemId, poem, themeName) => {
+    navigate(`/poems/${poemId}`, { state: { data: { poem, themeName } } });
   };
 
   const handleRouteToTheme = (themeName) => {
@@ -90,7 +90,7 @@ function Contributions() {
                 <div className="container-fluid">
                   <div className="row">
                     <div className="Contributions-poem-lines col-md" style={verticalLineStyle}
-                    onClick={() => handleRouteToPoem(tag.poemId, tag.poem)}>
+                    onClick={() => handleRouteToPoem(tag.poemId, tag.poem, tag.themeName)}>
                       <h5>Relevant Lines:</h5>
                       {tag.highlightedLines[0] > 1 && (
                         <p className="text-center" style={{ fontWeight: "300" }}>

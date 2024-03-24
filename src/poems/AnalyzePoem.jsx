@@ -145,9 +145,9 @@ useEffect(() => {
         setTimeout(() => {
           badgeElement.click(); // Directly calling click() assuming event listeners are correctly set up
           // Or if necessary, dispatch a more detailed event as shown in your example
-        }, 1000); // Adjust timing as needed based on scroll and event setup
+        }, 800); // Adjust timing as needed based on scroll and event setup
       }
-    }, 200); // Adjust based on when you expect elements to be ready
+    }, 100); // Adjust based on when you expect elements to be ready
   }
 }, [matchingTag, themeName, tags]); // Reacting to changes in matchingTag or themeName
 
