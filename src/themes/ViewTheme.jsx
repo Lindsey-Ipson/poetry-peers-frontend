@@ -54,7 +54,7 @@ function ViewTheme () {
 			<h4 className="text-center">Explore poems that deal with the theme of {themeName}:</h4>
 	
 			{themePoems.map((poem) => (
-				<div key={poem.id} onClick={() => handleRouteToPoem(poem.id, poem)}>
+				<div className="ViewTheme-poem" key={poem.id} onClick={() => handleRouteToPoem(poem.id, poem)}>
 					<div className="ViewTheme-theme card fade show d-block" tabIndex="-1" role="dialog" key={uuidv4()}>
 						<div className="card-dialog card-xl" role="document">
 							<div className="card-content">
