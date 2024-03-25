@@ -17,7 +17,7 @@ const selectedIndicesMock = [0, 1];
 
 // Mocking react-router-dom hooks
 jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
+  ...jest.requireActual('react-router-dom'), // Use actual for all non-hook parts
   useParams: () => ({
     poemId: 'poem1',
   }),
@@ -49,12 +49,13 @@ describe('CreateTagForm', () => {
     );
 
     // Check if poem details and the currently existing theme choices are rendered
-    expect(screen.getByText(/Poem 1/)).toBeInTheDocument();
-    expect(screen.getByText(/by Author 1/)).toBeInTheDocument();
-    expect(screen.getByText(/Line 1/)).toBeInTheDocument();
-    expect(screen.getByText(/Line 2/)).toBeInTheDocument();
-    // expect(screen.getByText(/Theme 1/)).toBeInTheDocument();
-    // expect(screen.getByText(/Theme 2/)).toBeInTheDocument();
-  });
+    await waitFor(() => {
+      expect(screen.getByText(/Poem 1/)).toBeInTheDocument();
+      expect(screen.getByText(/by Author 1/)).toBeInTheDocument();
+      expect(screen.getByText(/Line 1/)).toBeInTheDocument();
+      expect(screen.getByText(/Line 2/)).toBeInTheDocument();
+      expect(screen.getByText(/Theme 1/)).toBeInTheDocument();
+      expect(screen.getByText(/Theme 2/)).toBeInTheDocument();
+  })});
 
 });

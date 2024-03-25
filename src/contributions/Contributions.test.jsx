@@ -78,8 +78,6 @@ describe('Contributions', () => {
 
     await waitFor(() => {
       expect(BackendApi.deleteTag).toHaveBeenCalledWith(tagsMock[0].themeName, tagsMock[0].poemId, tagsMock[0].highlightedLines);
-      // Since we're not actually navigating, we might not need to assert on mockNavigate in this case
-      // expect(mockNavigate).toHaveBeenCalledWith(expect.any(String), { replace: true });
       expect(queryByText(/Sample analysis/i)).not.toBeInTheDocument();
     });
   });

@@ -66,9 +66,6 @@ function AnalyzePoem () {
         setPoem(fetchedPoem);
 
         poemTags = await BackendApi.getTagsByPoemId(fetchedPoem.id);
-				console.log(poemTags, '<--- POEM TAGS');
-				console.log(fetchedPoem, '<--- POEM');
-				console.log(fetchedPoem.lines, '<--- POEM LINES')
 
         poemTags.forEach((tag, i) => {
           tag.color = lightColors[i % lightColors.length];
