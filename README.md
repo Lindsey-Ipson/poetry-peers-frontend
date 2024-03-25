@@ -46,7 +46,7 @@ The Contributions tab contains statistics about a user's account history and all
 ![View Account Contributions Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/ContributionsScreenshot.png)
 
 ## Data Schema
-![Database Schema](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/DatabaseSchemaDiagram.png)
+![Database Schema](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/DataSchemaDiagram.png)
 
 ## Main Technology Used:
 
