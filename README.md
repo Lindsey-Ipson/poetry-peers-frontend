@@ -29,28 +29,24 @@ The Contributions tab contains statistics about a user's account history and all
 
 ## Example Screenshots
 ### Homepage
-![Homepage Screenshot]()
+![Homepage Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/HomepageScreenshot.png)
 ### Explore Poems Random
-![Explore Poems Random Screenshot]()
+![Explore Poems Random Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/ExplorePoemsRandomScreenshot.png)
 ### Explore Poems Search
-![Explore Poems Search Screenshot]()
+![Explore Poems Search Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/ExplorePoemsSearchScreenshot.png)
 ### Explore Themes
-![Explore Themes Screenshot]()
+![Explore Themes Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/ExploreThemesScreenshot.png)
 ### Analyze Poem
-![Analyze Poem Screenshot]()
-### View Tag
-![View Tag Screenshot]()
+![Analyze Poem Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/AnalyzePoemScreenshot.png)
 ### Create Tag
-![Create Tag Screenshot]()
+![Create Tag Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/CreateTagScreenshot.png)
 ### View Theme
-![View Theme Screenshot]()
+![View Theme Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/ViewThemeScreenshot.png)
 ### View Account Contributions
-![View Account Contributions Screenshot]()
-
-
+![View Account Contributions Screenshot](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/ContributionsScreenshot.png)
 
 ## Data Schema
-![Database Schema]()
+![Database Schema](https://github.com/Lindsey-Ipson/poetry-peers-frontend/blob/main/README_files/DatabaseSchemaDiagram.png)
 
 ## Main Technology Used:
 
