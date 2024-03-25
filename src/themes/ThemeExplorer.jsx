@@ -14,6 +14,8 @@ function ThemeExplorer () {
   const [alertInfo, setAlertInfo] = useState({ show: false, message: '' });
  
   async function fetchThemesWithPoems () {
+    setLoading(true);
+
     let themesData = await BackendApi.getThemes();
     for (let themeData of themesData) {
       let tagsForTheme = await BackendApi.getTagsByThemeName(themeData.name);
@@ -30,6 +32,7 @@ function ThemeExplorer () {
         }
       }
     }
+    setLoading(false);
     setThemes(themesData);
   };
 
@@ -141,29 +144,33 @@ function ThemeExplorer () {
         </div>
         </form>
 
-      <ul className="list-group ">
+        {loading && <div className="ThemeExplorer-loading-message text-center mt-3">Please allow a moment for the themes to be fetched...</div>}
+      
+        {!loading &&
+          <ul className="list-group ">
+          
+            {themes.map((theme) => (
+              <li key={uuidv4()} className="list-group-item" onClick={() => handleRouteToTheme(theme.name)}>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h5 className="ThemeExplorer-theme-name fw-bold mb-1">{theme.name}</h5>
+            
+                    {theme.poems.map((poem) => (
+                      <p key={poem.id} className="poem-item mb-1" onClick={(event) => handleRouteToPoem(event, theme.name, poem)}>
+                        <span className="ThemeExplorer-poem-title">"{poem.title}"</span> <span className="text-muted">by {poem.author}</span>
+                      </p>
+                    ))}
 
-        {themes.map((theme) => (
-          <li key={uuidv4()} className="list-group-item" onClick={() => handleRouteToTheme(theme.name)}>
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <h5 className="ThemeExplorer-theme-name fw-bold mb-1">{theme.name}</h5>
-
-                {theme.poems.map((poem) => (
-                  <p key={poem.id} className="poem-item mb-1" onClick={(event) => handleRouteToPoem(event, theme.name, poem)}>
-                    <span className="ThemeExplorer-poem-title">"{poem.title}"</span> <span className="text-muted">by {poem.author}</span>
-                  </p>
-                ))}
-
-              </div>
-              <span className="ThemeExplorer-poem-count">
-                {theme.poems.length !== 1 ? `${theme.poems.length} poems` : '1 poem'}                
-              </span>
-            </div>
-          </li>
-        ))}
-
-      </ul>
+                  </div>
+                  <span className="ThemeExplorer-poem-count">
+                    {theme.poems.length !== 1 ? `${theme.poems.length} poems` : '1 poem'}                
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        
+        } 
     </div>
   );
 }
