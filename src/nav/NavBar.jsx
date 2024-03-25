@@ -65,7 +65,7 @@ function NavBar({ logout }) {
 	);
 
 	const navBar = (
-		<nav className="NavBar navbar navbar-expand-md navbar-light bg-light fixed-top">
+		<nav className="NavBar navbar navbar-expand-md navbar-light bg-light fixed-top" data-testid="navbar">
 			<div className="container-fluid">
 				<NavLink to="/" className="navbar-brand">
           <img src="/FountainPenTip.jpg" alt="logo" className="NavBar-logo"/>

@@ -15,7 +15,7 @@ function AlertMessage({ alertType, errors }) {
   });
 
   return (
-    <div className={`alert alert-${alertType}`}>
+    <div className={`alert alert-${alertType}`} role="alert">
       {formattedErrors.map((error, index) => (
         <p key={index}>{error}</p>
       ))}

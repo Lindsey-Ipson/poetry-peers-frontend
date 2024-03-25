@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import backendApi from "../common/backendApi";
 import { capitalizeWords } from "./poemUtils";
@@ -21,11 +21,15 @@ function CreateTagForm() {
 	}
 
   const { selectedIndices, poem, currentUser } = initialState || {};
+  console.log("selectedIndices:", selectedIndices);
+  console.log("poem:", poem);
+  console.log("currentUser:", currentUser);
 
   useEffect(() => {
     async function fetchThemes () {
       try {
         const themesData = await backendApi.getThemes();
+        console.log("themesData:", themesData);
 
         setThemes(
           themesData.map((theme) => {
@@ -37,6 +41,13 @@ function CreateTagForm() {
         console.error("Failed to fetch themes:", error);
       }
     };
+
+    console.log(themesData.map((theme) => {
+      return theme.name;
+    }), 'QQQQQQ');
+
+
+
 
     fetchThemes();
   }, [initialState]);
