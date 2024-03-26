@@ -5,7 +5,7 @@ import EnvironmentPlugin from "vite-plugin-environment";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), EnvironmentPlugin(["API_URL", "http://localhost:3001"])],
+  plugins: [react(), EnvironmentPlugin(["API_URL"])],
   server: {
     host: true,
     strictPort: true,
