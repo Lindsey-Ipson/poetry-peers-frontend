@@ -3,7 +3,9 @@ import axios from 'axios';
 /* !!! The following line must be commented out for testing !!!
  * This is because import.meta.env is not available in Jest tests, but is necessary for Vite production mode.
 */
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+// const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const BASE_URL = process.env.API_URL || "http://localhost:3001";
 
 class BackendApi {
 	static token;
