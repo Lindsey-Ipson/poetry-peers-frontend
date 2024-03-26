@@ -18,6 +18,13 @@ describe('hashPoem', () => {
 
 describe('getOrAddPoemToDb', () => {
   beforeEach(() => {
+    
+      console.log('NODE_ENV:', process.env.NODE_ENV);
+    
+    
+
+
+
     BackendApi.getPoemById.mockClear();
     BackendApi.getTagsByPoemId.mockClear();
     BackendApi.addPoem.mockClear();

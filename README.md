@@ -9,7 +9,7 @@ Backend code base:
 
 ## Summary
 
-This is the frontend of Poetry Peers, a collaborative poetry analysis application. It allows users to explore new poems by key word, theme, or a selection of random poems. Users can tag specific lines in a poem with a new or pre-existing theme, and provide a brief analysis/explanation. These tags are then viewable to all over users when they view that poem. The purpose of the application is to allow users to explore new poems and poetry themes, while gaining new insights into the literature from fellow poetry readers.
+This is the frontend of Poetry Peers, a collaborative poetry analysis application. It allows users to explore new poems by key word, theme, or a selection of random poems. Users can tag specific lines in a poem with a new or pre-existing theme, and provide a brief analysis/explanation. These tags are then viewable to all other users when they view that poem. The purpose of the application is to allow users to explore new poems and poetry themes, while gaining new insights into the literature from fellow poetry readers.
 
 ## API
 
